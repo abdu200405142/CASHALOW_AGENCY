@@ -7,7 +7,7 @@ const WebSocket = require('ws');
 // إعدادات التليجرام
 const TELEGRAM_BOT_TOKEN = '8194506415:AAEcJ6bzmJFd02dcYt0fB7O5oOumSR2cL78';
 const TELEGRAM_CHAT_ID = '5968641533';
-const TELEGRAM_API = https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN};
+const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
 
 // إنشاء تطبيق Express
 const app = express();
