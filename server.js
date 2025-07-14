@@ -64,13 +64,15 @@ app.get('/', (req, res) => res.send('Server running'));
 
 // بدء السيرفر (Express + WebSocket)
 const PORT = process.env.PORT || 3000;
-const server = app.listen(PORT, () => {
-  console.log('Server running on port', PORT);
-});
+const server = http.createServer(app);
 
 const wss = new WebSocket.Server({ server });
 
 wss.on('connection', (ws) => {
   clients.add(ws);
   ws.on('close', () => clients.delete(ws));
+});
+
+server.listen(PORT, () => {
+  console.log('Server running on port', PORT);
 });
