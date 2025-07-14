@@ -21,7 +21,7 @@ app.post('/api/send', (req, res) => {
   const { userId, message } = req.body;
   if (!userId || !message) return res.status(400).send('Missing fields');
 
-  const text = [${userId}]: ${message};
+  const text = `[${userId}]: ${message}`;
 
   axios.post(`${TELEGRAM_API}/sendMessage`, {
     chat_id: TELEGRAM_CHAT_ID,
