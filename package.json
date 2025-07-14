@@ -1,0 +1,20 @@
+{
+  "name": "cashflow_agency",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abdu200405142/CASHALOW_AGENCY.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abdu200405142/CASHALOW_AGENCY/issues"
+  },
+  "homepage": "https://github.com/abdu200405142/CASHALOW_AGENCY#readme",
+  "description": ""
+}
