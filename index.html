@@ -1,0 +1,1452 @@
+<script>
+const OPENAI_API_KEY = "YOUR_API_KEY";
+</script>
+</style>
+<!-- بوت روبوت أزرق متوهج في الزاوية اليسرى السفلى -->
+<div id="ai-bot-widget">
+  <div id="ai-bot-icon" title="مرحبًا! هل تحتاج للمساعدة؟">
+    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+      <ellipse cx="30" cy="38" rx="18" ry="15" fill="#0ff" filter="url(#glow)"/>
+      <ellipse cx="30" cy="38" rx="18" ry="15" fill="#0ff" fill-opacity="0.3"/>
+      <ellipse cx="30" cy="28" rx="20" ry="18" fill="#0cf" stroke="#0ff" stroke-width="2"/>
+      <ellipse cx="22" cy="28" rx="3.5" ry="5" fill="#fff"/>
+      <ellipse cx="38" cy="28" rx="3.5" ry="5" fill="#fff"/>
+      <ellipse cx="22" cy="28" rx="1.5" ry="2" fill="#0ff"/>
+      <ellipse cx="38" cy="28" rx="1.5" ry="2" fill="#0ff"/>
+      <rect x="25" y="44" width="10" height="4" rx="2" fill="#0ff" fill-opacity="0.7"/>
+      <defs>
+        <filter id="glow" x="0" y="10" width="60" height="50" filterUnits="userSpaceOnUse">
+          <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+    </svg>
+  </div>
+  <div id="ai-bot-chat" style="display:none">
+    <div class="ai-bot-header">
+      <span>🤖 مساعد كاش فلو</span>
+      <button id="ai-bot-menu" title="خيارات"><i class="fa fa-ellipsis-v"></i></button>
+      <button id="ai-bot-close">×</button>
+      <div id="ai-bot-menu-popup" style="display:none;position:absolute;top:48px;left:16px;z-index:10;background:#fff;color:#0cf;padding:14px 18px;border-radius:12px;box-shadow:0 4px 24px #0cf4;min-width:220px;font-size:1rem;">
+        <b>تواصل معنا عبر تلغرام:</b><br>
+        <a href="https://t.me/Cashflow_Agency" target="_blank" style="color:#0cf;text-decoration:underline;">@Cashflow_Agency</a>
+        <br><br>
+        <span style="color:#888;font-size:0.95em;">يمكنك إرسال استفسارك مباشرة عبر تلغرام</span>
+      </div>
+    </div>
+    <div class="ai-bot-messages">
+      <div class="ai-bot-msg ai-bot-msg-bot">
+        <span>👋 أهلًا بك في كاش فلو أجينسي! كيف يمكنني مساعدتك؟ أنا مختص في توجيهك حتى لا يتم نصب عليك</span>
+      </div>
+    </div>
+    <div class="ai-bot-input-row">
+      <input type="text" id="ai-bot-input" placeholder="اكتب رسالتك..." autocomplete="off" />
+      <button id="ai-bot-mic" title="إرسال صوتي" style="margin-left:6px;"><i class="fa fa-microphone"></i></button>
+      <button id="ai-bot-send"><i class="fa fa-paper-plane"></i></button>
+    </div>
+  </div>
+</div>
+<style>
+/* بوت روبوت أزرق متوهج */
+#ai-bot-widget {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+#ai-bot-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 0 18px 4px #0ff8, 0 0 0 2px #0cf8;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+#ai-bot-icon:hover {
+  transform: scale(1.08) rotate(-6deg);
+  box-shadow: 0 0 32px 8px #0ff, 0 0 0 3px #0cf;
+}
+#ai-bot-icon svg { display: block; }
+
+/* تكبير نافذة الدردشة مثل Tawk.to */
+#ai-bot-chat {
+  width: 400px;
+  height: 600px;
+  max-width: 98vw;
+  max-height: 90vh;
+  background: linear-gradient(135deg, #0a1a2f 80%, #0ff 100%);
+  border-radius: 18px 18px 12px 12px;
+  box-shadow: 0 8px 32px #0cf8, 0 0 0 2px #0ff8;
+  margin-top: 12px;
+  overflow: hidden;
+  animation: ai-bot-fadein 0.3s;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.ai-bot-header {
+  position: relative;
+}
+@keyframes ai-bot-fadein {
+  from { opacity: 0; transform: translateY(40px) scale(0.9); }
+  to { opacity: 1; transform: none; }
+}
+.ai-bot-header {
+  background: #0cf;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ai-bot-header button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.ai-bot-header button:hover { color: #0ff; }
+.ai-bot-messages {
+  flex: 1;
+  background: rgba(10,30,60,0.13);
+  padding: 16px 12px 8px 12px;
+  overflow-y: auto;
+  max-height: 320px;
+  min-height: 80px;
+}
+.ai-bot-msg {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-end;
+}
+.ai-bot-msg-bot {
+  background: linear-gradient(90deg, #0cf 60%, #0ff 100%);
+  color: #fff;
+  border-radius: 12px 12px 12px 4px;
+  padding: 8px 14px;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px #0cf4;
+  align-self: flex-start;
+}
+.ai-bot-msg-user {
+  background: #fff;
+  color: #0cf;
+  border-radius: 12px 12px 4px 12px;
+  padding: 8px 14px;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px #0cf2;
+  align-self: flex-end;
+}
+.ai-bot-input-row {
+  display: flex;
+  align-items: center;
+  padding: 10px 10px 10px 10px;
+  background: #0cf2;
+  border-top: 1px solid #0ff4;
+}
+#ai-bot-input {
+  flex: 1;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 1rem;
+  margin-right: 8px;
+  outline: none;
+}
+#ai-bot-send {
+  background: #0ff;
+  color: #0a1a2f;
+  border: none;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 0 8px #0ff8;
+  transition: background 0.2s;
+}
+#ai-bot-send:hover { background: #0cf; color: #fff; }
+</style>
+<script>
+// بوت روبوت: إظهار/إخفاء الدردشة
+const aiBotIcon = document.getElementById('ai-bot-icon');
+const aiBotChat = document.getElementById('ai-bot-chat');
+const aiBotClose = document.getElementById('ai-bot-close');
+const aiBotMenu = document.getElementById('ai-bot-menu');
+const aiBotMenuPopup = document.getElementById('ai-bot-menu-popup');
+const aiBotMic = document.getElementById('ai-bot-mic');
+
+aiBotIcon.onclick = () => { aiBotChat.style.display = 'flex'; };
+aiBotClose.onclick = () => { aiBotChat.style.display = 'none'; };
+// تلميح عند المرور
+aiBotIcon.onmouseenter = function() {
+  aiBotIcon.setAttribute('title', 'مرحبًا! هل تحتاج للمساعدة؟');
+};
+// زر ثلاث نقاط
+aiBotMenu.onclick = function(e) {
+  e.stopPropagation();
+  aiBotMenuPopup.style.display = aiBotMenuPopup.style.display === 'block' ? 'none' : 'block';
+};
+document.addEventListener('click', function(e){
+  if (aiBotMenuPopup && !aiBotMenu.contains(e.target)) aiBotMenuPopup.style.display = 'none';
+});
+// زر مايكروفون (أيقونة فقط حالياً)
+aiBotMic.onclick = function() {
+  alert('ميزة إرسال رسالة صوتية ستتوفر قريباً!');
+};
+</script>
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cashflow Agency</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 80%, #ff003c 100%);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .animated-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: -1;
+      background: radial-gradient(circle at 20% 30%, #ff003c55 0%, transparent 60%),
+                  radial-gradient(circle at 80% 70%, #00eaff55 0%, transparent 60%),
+                  url('https://www.transparenttextures.com/patterns/stardust.png');
+      animation: bgmove 10s linear infinite alternate;
+    }
+    @keyframes bgmove {
+      0% { background-position: 0 0, 100vw 100vh, 0 0; }
+      100% { background-position: 100vw 100vh, 0 0, 100vw 100vh; }
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 40px 10px 40px;
+      position: relative;
+    }
+    .header-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      margin: 0;
+    }
+    .glow-title {
+      font-size: 2.5rem;
+      color: #fff;
+      font-weight: bold;
+      letter-spacing: 2px;
+      user-select: none;
+      text-shadow:
+        0 0 5px #7df9ff,
+        0 0 10px #7df9ff,
+        0 0 20px #7df9ff,
+        0 0 40px #7df9ff,
+        0 0 80px #7df9ff,
+        0 0 120px #7df9ff;
+      filter: drop-shadow(0 0 8px #7df9ff);
+    }
+    /* نجوم زرقاء ثلاثية الأبعاد متوهجة بدون خلفية */
+    .blue-3d-star {
+      display: inline-block;
+      font-size: 2.5rem;
+      color: #00bfff;
+      vertical-align: middle;
+      margin: 0 8px;
+      text-shadow:
+        0 0 12px #00bfff,
+        0 0 24px #00bfff,
+        0 0 32px #00bfff,
+        0 0 48px #00bfff,
+        0 0 8px #fff;
+      filter: drop-shadow(0 0 8px #00bfff);
+      animation: blueStarPulse 1.6s infinite alternate;
+    }
+    @keyframes blueStarPulse {
+      0% {
+        text-shadow:
+          0 0 12px #00bfff,
+          0 0 24px #00bfff,
+          0 0 32px #00bfff,
+          0 0 48px #00bfff,
+          0 0 8px #fff;
+        filter: drop-shadow(0 0 8px #00bfff);
+        transform: scale(1);
+      }
+      50% {
+        text-shadow:
+          0 0 24px #00bfff,
+          0 0 48px #00bfff,
+          0 0 64px #00bfff,
+          0 0 96px #00bfff,
+          0 0 16px #fff;
+        filter: drop-shadow(0 0 16px #00bfff);
+        transform: scale(1.12);
+      }
+      100% {
+        text-shadow:
+          0 0 12px #00bfff,
+          0 0 24px #00bfff,
+          0 0 32px #00bfff,
+          0 0 48px #00bfff,
+          0 0 8px #fff;
+        filter: drop-shadow(0 0 8px #00bfff);
+        transform: scale(1);
+      }
+    }
+    /* عنوان بدون توهج خلفي، فقط تأثير الوميض المتحرك */
+    .blue-glow-title {
+      position: relative;
+      font-size: 2.7rem;
+      color: #eaf6ff;
+      font-weight: bold;
+      letter-spacing: 2px;
+      user-select: none;
+      text-shadow: none;
+      filter: none;
+      overflow: hidden;
+      background: none !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    /* تأثير وميض أو شعاع متحرك على النص */
+    .blue-glow-title::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -60%;
+      width: 60%; height: 100%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(0,191,255,0.22) 60%, rgba(255,255,255,0.08) 100%);
+      filter: blur(2px);
+      pointer-events: none;
+      animation: shineMove 2.8s linear infinite;
+    }
+    @keyframes shineMove {
+      0% { left: -60%; }
+      100% { left: 100%; }
+    }
+    .header-btns {
+      display: flex;
+      gap: 18px;
+    }
+    .circle-btn {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #222 60%, #ff003c 100%);
+      box-shadow: 0 0 12px #ff003c88;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 1.3rem; font-weight: bold;
+      border: none; cursor: pointer;
+      transition: box-shadow 0.2s, background 0.2s;
+      position: relative;
+    }
+    .circle-btn:hover {
+      box-shadow: 0 0 24px #ff003c, 0 0 8px #fff;
+      background: linear-gradient(135deg, #ff003c 60%, #222 100%);
+    }
+    .lang-dropdown {
+      display: none;
+      position: absolute;
+      top: 54px; left: 0;
+      background: #222;
+      border-radius: 10px;
+      box-shadow: 0 0 24px #ff003c, 0 0 8px #fff;
+      min-width: 140px;
+      z-index: 1000;
+      animation: fadeIn 0.3s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .lang-dropdown button {
+      width: 100%;
+      background: none;
+      border: none;
+      color: #fff;
+      padding: 10px 18px;
+      font-size: 1rem;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.2s;
+    }
+    .lang-dropdown button:hover {
+      background: #ff003c44;
+    }
+    .contact-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(10,10,10,0.85);
+      z-index: 100;
+      align-items: center; justify-content: center;
+    }
+    .contact-content {
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 18px;
+      box-shadow: 0 0 25px #ff003c;
+      padding: 28px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: stretch;
+      width: 280px;
+      min-height: 500px;
+      margin: auto;
+      position: relative;
+    }
+    .social-popup {
+      background: none !important;
+      box-shadow: none !important;
+      border: none !important;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: stretch;
+      gap: 0;
+    }
+    .social-button a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      background: linear-gradient(to right, #ff0000, #222);
+      padding: 12px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: bold;
+      transition: 0.3s, box-shadow 0.3s;
+      box-shadow: 0 2px 18px 0 #ff003c88;
+      width: 100%;
+      margin: 8px 0;
+      text-align: center;
+    }
+    .social-button a:hover {
+      background: linear-gradient(to right, #ff4d4d, #111);
+      box-shadow: 0 0 32px #ff003c, 0 0 24px #fff, 0 0 40px #ff003c;
+      filter: brightness(1.2) drop-shadow(0 0 8px #ff003c);
+    }
+    .contact-content a {
+      display: flex; flex-direction: column; align-items: center;
+      text-decoration: none; color: #fff;
+      font-size: 1.1rem;
+      background: linear-gradient(135deg, #222 60%, #ff003c 100%);
+      border-radius: 12px;
+      box-shadow: 0 0 12px #ff003c88;
+      padding: 12px 0;
+      transition: box-shadow 0.2s, background 0.2s;
+    }
+    .contact-content a:hover {
+      box-shadow: 0 0 24px #ff003c, 0 0 8px #fff;
+      background: linear-gradient(135deg, #ff003c 60%, #222 100%);
+    }
+    .contact-content .icon {
+      font-size: 2rem;
+      margin-bottom: 6px;
+      text-shadow: 0 0 12px #ff003c88;
+    }
+    .close-contact {
+      position: absolute;
+      top: 10px; right: 18px;
+      background: none; border: none; color: #fff;
+      font-size: 1.5rem; cursor: pointer;
+    }
+    main {
+      margin: 40px auto 0 auto;
+      max-width: 1200px;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .packages {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
+      margin: 40px 0;
+      width: 100%;
+    }
+    .package-card {
+      background: linear-gradient(135deg, #2e2e2e 0%, #00bfff 100%);
+      color: #fff;
+      border-radius: 24px;
+      box-shadow: 0 0 32px rgba(0,191,255,0.18), 0 0 24px rgba(46,46,46,0.18), 0 0 20px rgba(0,191,255,0.12), 0 0 8px #fff;
+      padding: 32px 24px;
+      display: flex; flex-direction: column; align-items: center;
+      transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+      position: relative;
+      min-height: 340px;
+      cursor: pointer;
+    }
+    .package-card:hover {
+      transform: scale(1.04);
+      box-shadow: 0 0 48px #010202, 0 0 32px #2e2e2e, 0 0 40px #00bfff, 0 0 50px #fff;
+      background: linear-gradient(135deg, #000b0f 0%, #2e2e2e 100%);
+    }
+    .package-title {
+      border: 2px solid var(--icon-color, #00ff88);
+      padding: 10px 24px;
+      border-radius: 12px;
+      display: inline-block;
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+      background: linear-gradient(90deg, var(--icon-color, #00ff88), #ffff00);
+      box-shadow: 0 0 10px var(--icon-color, #00ff88);
+      margin-bottom: 10px;
+      animation: glow 2s infinite alternate;
+      transition: background 0.6s, box-shadow 0.3s, border-color 0.3s;
+    }
+    .package-card:hover .package-title {
+      background: linear-gradient(90deg, #ffff00, var(--icon-color, #00ff88));
+      box-shadow: 0 0 20px #ffff00;
+      border-color: #ffff00;
+    }
+    @keyframes glow {
+      0% { box-shadow: 0 0 10px var(--icon-color, #00ff88); }
+      100% { box-shadow: 0 0 20px #ffff00; }
+    }
+    .package-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px auto;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #222 60%, var(--icon-color, #27ff5a) 100%);
+      box-shadow: 0 0 24px var(--icon-color, #27ff5a), 0 0 8px #fff;
+      filter: drop-shadow(0 0 12px var(--icon-color, #27ff5a));
+      transition: box-shadow 0.3s, background 0.3s, transform 0.3s, filter 0.3s;
+      position: relative;
+    }
+    .package-icon i {
+      font-size: 2rem;
+      color: #fff;
+      text-shadow: 0 0 12px var(--icon-color, #27ff5a), 0 0 4px #fff;
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+    .package-icon.icon-box {
+      perspective: 400px;
+      box-shadow: 0 0 32px var(--icon-color, #27ff5a), 0 0 12px #fff;
+      background: linear-gradient(135deg, #222 60%, var(--icon-color, #27ff5a) 100%);
+      border: 2px solid var(--icon-color, #27ff5a);
+    }
+    .package-card:hover .package-icon.icon-box {
+      transform: scale(1.12) rotateY(-12deg) rotateZ(-8deg);
+      box-shadow: 0 0 48px var(--icon-color, #ffe027), 0 0 24px #fff, 0 0 40px var(--icon-color, #27ff5a);
+      filter: drop-shadow(0 0 32px var(--icon-color, #27ff5a));
+      background: linear-gradient(135deg, var(--icon-color, #27ff5a) 60%, #222 100%);
+    }
+    .package-card:hover .package-icon.icon-box i {
+      color: #ffe027;
+      text-shadow: 0 0 24px #ffe027, 0 0 8px #fff;
+    }
+    .package-card:hover {
+      box-shadow: 0 0 64px #ff003c, 0 0 32px #fff;
+      background: linear-gradient(135deg, #ff003c 60%, #222 100%);
+      transform: scale(1.06);
+    }
+    .package-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      text-align: center;
+      text-shadow: 0 0 8px #fff;
+    }
+    .package-desc {
+      font-size: 1.1rem;
+      margin-bottom: 18px;
+      text-align: center;
+      line-height: 1.7;
+    }
+    .package-btn {
+      background: linear-gradient(135deg, #ff003c 60%, #222 100%);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 32px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 12px #ff003c88;
+      transition: box-shadow 0.2s, background 0.2s;
+    }
+    .package-btn:hover {
+      box-shadow: 0 0 24px #ff003c, 0 0 8px #fff;
+      background: linear-gradient(135deg, #222 60%, #ff003c 100%);
+    }
+footer {
+  margin-top: 60px;
+  padding: 32px 0 12px 0;
+  background: #111;
+  text-align: center;
+  box-shadow: 0 0 24px #ff003c88;
+  position: relative; /* Ensure not fixed */
+  width: 100%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+    .footer-icons {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 12px;
+    }
+    .footer-icon {
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 2rem;
+      color: #fff;
+      background: linear-gradient(135deg, #00bfff 60%, #2e2e2e 100%);
+      box-shadow: 0 0 18px #00bfff88, 0 0 8px #fff;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: box-shadow 0.2s, background 0.2s, transform 0.2s;
+      animation: pulseEmailBtn 2s infinite alternate;
+    }
+    .footer-icon:hover {
+      box-shadow: 0 0 32px #00bfff, 0 0 16px #fff;
+      background: linear-gradient(135deg, #2e2e2e 60%, #00bfff 100%);
+      transform: scale(1.08);
+    }
+    .copyright {
+      color: #fff;
+      font-size: 1rem;
+      margin-top: 8px;
+      opacity: 0.7;
+    }
+    @media (max-width: 700px) {
+      header { flex-direction: column; padding: 18px 10px 6px 10px; }
+      .logo { font-size: 2rem; }
+      .contact-content { grid-template-columns: 1fr 1fr; }
+      .packages { grid-template-columns: 1fr; }
+      .package-card { min-height: 320px; }
+    }
+    @media (max-width: 500px) {
+      .contact-content { grid-template-columns: 1fr; }
+      .footer-icons { gap: 18px; }
+    }
+    .fixed-email-btn {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      z-index: 9999;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00bfff 60%, #2e2e2e 100%);
+      box-shadow: 0 0 18px #00bfff88, 0 0 8px #fff;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: box-shadow 0.2s, background 0.2s, transform 0.2s;
+      animation: pulseEmailBtn 2s infinite alternate;
+    }
+    .fixed-email-btn:hover {
+      box-shadow: 0 0 32px #00bfff, 0 0 16px #fff;
+      background: linear-gradient(135deg, #2e2e2e 60%, #00bfff 100%);
+      transform: scale(1.08);
+    }
+    @keyframes pulseEmailBtn {
+      0% { box-shadow: 0 0 18px #00bfff88, 0 0 8px #fff; }
+      100% { box-shadow: 0 0 32px #00bfff, 0 0 16px #fff; }
+    }
+    .contact-popup {
+      position: fixed;
+      top: 0; right: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(10,10,10,0.85);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: flex-end;
+      animation: fadeIn 0.3s;
+    }
+    .contact-popup.show {
+      display: flex;
+    }
+    .contact-popup-content {
+      background: linear-gradient(135deg, #222 60%, #00bfff 100%);
+      border-radius: 24px 0 0 24px;
+      box-shadow: 0 0 32px #00bfff88, 0 0 12px #fff;
+      padding: 38px 32px 32px 32px;
+      min-width: 340px;
+      max-width: 98vw;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      animation: slideInRight 0.4s;
+    }
+    @keyframes slideInRight {
+      from { transform: translateX(100vw); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .contact-popup-content form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .contact-popup-content input,
+    .contact-popup-content textarea {
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      font-size: 1.1rem;
+      background: #181818;
+      color: #fff;
+      box-shadow: 0 0 8px #00bfff44;
+      outline: none;
+      transition: box-shadow 0.2s;
+    }
+    .contact-popup-content input:focus,
+    .contact-popup-content textarea:focus {
+      box-shadow: 0 0 16px #00bfff88;
+    }
+    .send-btn {
+      background: linear-gradient(135deg, #00bfff 60%, #2e2e2e 100%);
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 0;
+      font-size: 1.2rem;
+      box-shadow: 0 0 12px #00bfff88;
+      cursor: pointer;
+      transition: box-shadow 0.2s, background 0.2s;
+    }
+    .send-btn:hover {
+      box-shadow: 0 0 24px #00bfff, 0 0 8px #fff;
+      background: linear-gradient(135deg, #2e2e2e 60%, #00bfff 100%);
+    }
+    .contact-status {
+      text-align: center;
+      font-size: 1rem;
+      margin-top: 8px;
+      min-height: 24px;
+    }
+    .close-contact {
+      position: absolute;
+      top: 18px; left: 18px;
+      background: none; border: none; color: #fff;
+      font-size: 1.5rem; cursor: pointer;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body dir="rtl">
+  <div class="animated-bg"></div>
+  <header>
+    <div class="header-btns">
+      <button class="circle-btn" id="langBtn">🌐</button>
+      <div class="lang-dropdown" id="langDropdown">
+        <button class="language-button active" data-lang="ar">العربية</button>
+        <button class="language-button" data-lang="en">English</button>
+        <button class="language-button" data-lang="fr">Français</button>
+      </div>
+    </div>
+    <h1 class="header-title">
+      <span class="blue-3d-star">&#9733;</span>
+      <span class="blue-glow-title">Cashflow Agency</span>
+      <span class="blue-3d-star">&#9733;</span>
+    </h1>
+    <div class="header-btns">
+      <button class="circle-btn" id="contactBtn">📞</button>
+    </div>
+  </header>
+  <div class="contact-modal" id="contactModal" style="display:none;">
+    <div class="contact-content">
+      <button class="close-contact" onclick="closeContact()">✖</button>
+      <div class="social-popup">
+        <a href="https://twitter.com/abdallah_akbi" target="_blank">
+          <i class="fab fa-twitter"></i> تويتر
+        </a>
+        <a href="https://www.tiktok.com/@sb_model1" target="_blank">
+          <i class="fab fa-tiktok"></i> تيك توك 1
+        </a>
+        <a href="https://www.tiktok.com/@hamzatrader07" target="_blank">
+          <i class="fab fa-tiktok"></i> تيك توك 2
+        </a>
+        <a href="https://t.me/Cashflow_Agency" target="_blank">
+          <i class="fab fa-telegram-plane"></i> قناة تلغرام
+        </a>
+        <a href="https://wa.me/560326460" target="_blank">
+          <i class="fab fa-whatsapp"></i> واتساب
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- زر الإيميل الدائري الثابت -->
+  <button id="fixedEmailBtn" class="fixed-email-btn"><i class="fas fa-envelope"></i></button>
+  <!-- نافذة التواصل المنبثقة -->
+  <div class="contact-popup" id="contactPopup">
+    <div class="contact-popup-content">
+      <button class="close-contact" id="closeContactPopup">✖</button>
+      <form id="contactForm" autocomplete="off">
+        <input type="text" name="full_name" placeholder="الاسم الكامل" required>
+        <input type="email" name="user_email" placeholder="البريد الإلكتروني" required>
+        <input type="tel" name="user_phone" placeholder="رقم الهاتف" required pattern="[0-9+ ]*">
+        <textarea name="message" placeholder="اكتب رسالتك هنا..." required></textarea>
+        <button type="submit" class="send-btn">إرسال الرسالة</button>
+        <div id="contactStatus" class="contact-status"></div>
+      </form>
+    </div>
+  </div>
+  <main>
+    <div class="packages">
+      <div class="package-card" onclick="location.href='https://broker-qx.pro/sign-up/?lid=789530'">
+        <div class="package-icon icon-box" style="--icon-color:#27ff5a;">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+        <div class="package-title" style="--icon-color:#27ff5a;">إحتراف التداول</div>
+        <div class="package-desc">هل أنت مبتدئ في عالم التداول ولا تعرف من أين تبدأ؟<br>هذه الدورة المجانية صنعت خصيصًا لك!<br>تعلم الأساسيات بخطوات بسيطة وبأسلوب ممتع وسهل.<br>ستحصل على معلومات قيّمة لم تسمع بها من قبل.<br>بداية رحلتك نحو الربح تبدأ من هنا، مجانًا!<br>لا تضيع الفرصة، مستقبلك الاستثماري يبدأ الآن.</div>
+        <a class="package-btn" href="https://t.me/Cashflow_Agency" target="_blank">ابدأ الآن</a>
+      </div>
+      <div class="package-card" onclick="location.href='https://broker-qx.pro/sign-up/?lid=789530'">
+        <div class="package-icon icon-box" style="--icon-color:#ffe027;">
+          <i class="fas fa-book-open"></i>
+        </div>
+        <div class="package-title" style="--icon-color:#ffe027;">كتابك حياتك</div>
+        <div class="package-desc">نقدم لك أعظم كتاب في حياتك، مجانًا!<br>هذا الكتاب لا تقرأه فقط، بل تعيشه وتبدأ تطبيقه.<br>فيه خلاصة تجارب وأفكار تغيّر عقلك وطريقتك في التفكير.<br>مفاتيح النجاح والحرية المالية بين يديك الآن.<br>استثمر وقتك في المعرفة، وابدأ التغيير.<br>لأن النجاح يبدأ من العقل، اقرأ لتنهض!</div>
+        <a class="package-btn" href="https://t.me/Cashflow_Agency" target="_blank">احصل عليه</a>
+      </div>
+      <div class="package-card" onclick="location.href='https://broker-qx.pro/sign-up/?lid=789530'">
+        <div class="package-icon icon-box" style="--icon-color:#27ff5a;">
+          <i class="fas fa-shopping-cart"></i>
+        </div>
+        <div class="package-title" style="--icon-color:#27ff5a;">التجارة الإلكترونية</div>
+        <div class="package-desc">تعلّم كيف تنشئ متجرك وتبيع منتجاتك حول العالم.<br>نكشف لك أسرار الشحن والتسويق والتحويلات الناجحة.<br>طرق حديثة للربح من الإنترنت بسهولة وذكاء.<br>محتوى عملي واحترافي من رواد التجارة الإلكترونية.<br>كل ما تحتاجه للنجاح متوفر داخل هذه الباقة.<br>انطلق اليوم نحو مشروعك الأول بثقة!</div>
+        <a class="package-btn" href="https://t.me/Cashflow_Agency" target="_blank">تعلم الآن</a>
+      </div>
+      <div class="package-card">
+        <div class="package-icon icon-box" style="--icon-color:#ffe027;">
+          <i class="fas fa-globe"></i>
+        </div>
+        <div class="package-title">التجارة الرقمية</div>
+        <div class="package-desc">استثمر في أقوى المجالات بالعالم الرقمي.<br>تعلم كيف تنشئ مصادر دخل رقمية دائمة.<br>نصائح من محترفين ومجربين في هذا المجال.<br>بيع منتجات رقمية، خدمات، أو دورات بسهولة.<br>أنت فقط بحاجة للإنترنت وعقل مفتوح للربح.<br>اجعل العالم الرقمي مصدر دخلك الحقيقي.</div>
+        <a class="package-btn" href="https://t.me/Cashflow_Agency" target="_blank">ابدأ</a>
+      </div>
+      <div class="package-card">
+        <div class="package-icon icon-box" style="--icon-color:#27ff5a;">
+          <i class="fas fa-handshake"></i>
+        </div>
+        <div class="package-title">التجارة الحرة</div>
+        <div class="package-desc">هنا تبدأ رحلتك نحو الاستقلال المالي الحقيقي.<br>تعلم فنون البيع والشراء في الأسواق المفتوحة.<br>استراتيجيات قوية في التجارة المحلية والعالمية.<br>تحرر من القيود، وابدأ تجارتك بدون حدود.<br>لا تحتاج إلى رأس مال كبير لتبدأ!<br>فقط قرار وإرادة، والباقي نحن نعلمك إياه.</div>
+        <a class="package-btn" href="https://t.me/Cashflow_Agency" target="_blank">استكشف</a>
+      </div>
+      <div class="package-card">
+        <div class="package-icon icon-box" style="--icon-color:#ffe027;">
+          <i class="fas fa-code"></i>
+        </div>
+        <div class="package-title">تطوير المواقع والتجارة بها</div>
+        <div class="package-desc">امتلك موقعك الإلكتروني وابدأ مشروعك بنفسك.<br>تعلم بناء صفحات احترافية تجذب العملاء.<br>دمج التجارة مع التقنية = أرباح مضاعفة.<br>دورة عملية بأسلوب بسيط وسهل الفهم.<br>لا تحتاج خبرة برمجية مسبقة، فقط شغف للتعلم.<br>اصنع موقعك وابدأ البيع مباشرة.</div>
+        <a class="package-btn" href="https://t.me/Cashflow_Agency" target="_blank">طور مشروعك</a>
+      </div>
+      <div class="package-card">
+        <div class="package-icon icon-box" style="--icon-color:#27ff5a;">
+          <i class="fas fa-paint-brush"></i>
+        </div>
+        <div class="package-title">مدرسة التصميم</div>
+        <div class="package-desc">هل تحب التصميم؟ حوّل شغفك إلى مهنة مربحة!<br>تعليم شامل للفوتوشوب، تصميم الشعارات، والمواقع.<br>أسرار الاحتراف والتعامل مع العملاء خطوة بخطوة.<br>مشاريع تطبيقية وشرح عملي مباشر.<br>ابدأ من الصفر وكن مصممًا محترفًا خلال أسابيع.<br>أنشئ عملك الخاص أو اعمل بشكل حر أونلاين.</div>
+        <a class="package-btn" href="https://t.me/Cashflow_Agency" target="_blank">سجل الآن</a>
+      </div>
+      <div class="package-card">
+        <div class="package-icon icon-box" style="--icon-color:#ffe027;">
+          <i class="fas fa-coins"></i>
+        </div>
+        <div class="package-title">شراء العملات الرقمية</div>
+        <div class="package-desc">تعرّف على أفضل طرق شراء العملات الرقمية بأمان.<br>نشرح لك كل التفاصيل عن BTC، USDT، EUR، DZD.<br>كيفية فتح محفظة، حفظ المفاتيح، وتفادي النصب.<br>فيديوهات تعليمية ودعم مباشر.<br>حتى لو كنت مبتدئًا، ستفهم بسهولة وتشتري بثقة.<br>هذا هو المستقبل، كن من أوائل المستثمرين.</div>
+        <a class="package-btn" href="https://t.me/Cashflow_Agency" target="_blank">ابدأ الاستثمار</a>
+      </div>
+      <div class="package-card">
+        <div class="package-icon icon-box" style="--icon-color:#27ff5a;">
+          <i class="fas fa-star"></i>
+        </div>
+        <div class="package-title">شهرتك تبدأ من هنا</div>
+        <div class="package-desc">لا تحتاج أن تكون مشهورًا لتبدأ، بل ابدأ لتصبح مشهورًا!<br>في هذه الباقة نكشف لك كيف تصنع علامة شخصية قوية.<br>نصائح عملية للظهور والانتشار في التيك توك، إنستغرام، ويوتيوب.<br>نعلمك كيف تحول المتابعين إلى فرص ومال حقيقي.<br>استغل قوتك وابدأ بناء مجتمعك الآن.<br>هذه هي فرصتك لتبدأ قصة النجاح أمام العالم.</div>
+        <a class="package-btn" href="https://t.me/Cashflow_Agency" target="_blank">ابدأ رحلتك</a>
+      </div>
+    </div>
+  </main>
+
+</style>
+  <section id="testimonials" style="padding: 50px 0; background: rgba(255, 255, 255, 0.02);">
+    <h2 style="text-align:center; color: white; font-size: 32px; margin-bottom: 30px; text-shadow: 0 0 10px #fff;">آراء عملائنا</h2>
+    <div class="testimonial-container">
+      <div class="testimonial-card">
+        <img class="testimonial-avatar" src="https://randomuser.me/api/portraits/men/32.jpg" alt="أحمد من الجزائر">
+        <div class="testimonial-info">
+          <div class="testimonial-name">أحمد <span>الجزائر</span></div>
+          <div class="testimonial-text">تعلمت أساسيات التداول مع هذه المنصة، وأصبحت أحقق أرباحًا يومية. شكراً من القلب!</div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <img class="testimonial-avatar" src="https://randomuser.me/api/portraits/women/44.jpg" alt="نورة من المغرب">
+        <div class="testimonial-info">
+          <div class="testimonial-name">نورة <span>المغرب</span></div>
+          <div class="testimonial-text">خدمة رائعة وسعر الدورة لا يُصدق! استفدت كثيراً من دورة التجارة الإلكترونية.</div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <img class="testimonial-avatar" src="https://randomuser.me/api/portraits/men/77.jpg" alt="سامي من تونس">
+        <div class="testimonial-info">
+          <div class="testimonial-name">سامي <span>تونس</span></div>
+          <div class="testimonial-text">كنت لا أعرف شيئًا عن البرمجة، الآن أستطيع صنع مواقعي الخاصة!</div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <img class="testimonial-avatar" src="https://randomuser.me/api/portraits/women/65.jpg" alt="لبنى من ليبيا">
+        <div class="testimonial-info">
+          <div class="testimonial-name">لبنى <span>ليبيا</span></div>
+          <div class="testimonial-text">أفضل مدرسة تعاملت معها. دعم مستمر وسريع.</div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <img class="testimonial-avatar" src="https://randomuser.me/api/portraits/men/12.jpg" alt="وليد من مصر">
+        <div class="testimonial-info">
+          <div class="testimonial-name">وليد <span>مصر</span></div>
+          <div class="testimonial-text">جربت الكثير من المنصات، لكن هنا وجدت الثقة والأسلوب المميز.</div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <img class="testimonial-avatar" src="https://randomuser.me/api/portraits/men/45.jpg" alt="سعيد من السعودية">
+        <div class="testimonial-info">
+          <div class="testimonial-name">سعيد <span>السعودية</span></div>
+          <div class="testimonial-text">الدروس واضحة جدًا والدعم سريع. أنصح الجميع بالتجربة.</div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <img class="testimonial-avatar" src="https://randomuser.me/api/portraits/women/68.jpg" alt="مريم من الإمارات">
+        <div class="testimonial-info">
+          <div class="testimonial-name">مريم <span>الإمارات</span></div>
+          <div class="testimonial-text">تجربة رائعة! تعلمت الكثير عن التجارة الرقمية.</div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <img class="testimonial-avatar" src="https://randomuser.me/api/portraits/men/23.jpg" alt="يوسف من الأردن">
+        <div class="testimonial-info">
+          <div class="testimonial-name">يوسف <span>الأردن</span></div>
+          <div class="testimonial-text">منصة احترافية وفريق عمل متعاون جدًا.</div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <img class="testimonial-avatar" src="https://randomuser.me/api/portraits/women/12.jpg" alt="سارة من قطر">
+        <div class="testimonial-info">
+          <div class="testimonial-name">سارة <span>قطر</span></div>
+          <div class="testimonial-text">استفدت كثيرًا من الدروس المجانية والدعم الفني.</div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <img class="testimonial-avatar" src="https://randomuser.me/api/portraits/men/81.jpg" alt="خالد من العراق">
+        <div class="testimonial-info">
+          <div class="testimonial-name">خالد <span>العراق</span></div>
+          <div class="testimonial-text">أفضل استثمار قمت به في حياتي. شكراً لكم!</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- إحصائيات مميزة -->
+  <section id="stats-cards" style="padding: 32px 0 24px 0;">
+    <div class="stats-cards-container">
+      <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #27ff5a 60%, #00eaff 100%);"><i class="fas fa-users"></i></div>
+        <div class="stat-text">50K+ Users</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #ffe027 60%, #27ff5a 100%);"><i class="fas fa-clock"></i></div>
+        <div class="stat-text">99.9% Uptime</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #00eaff 60%, #27ff5a 100%);"><i class="fas fa-award"></i></div>
+        <div class="stat-text">Industry Leader</div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <div class="footer-icons">
+      <a class="footer-icon" href="https://twitter.com/abdallah_akbi" target="_blank" title="تويتر">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a class="footer-icon" href="https://t.me/Cashflow_Agency" target="_blank" title="تلغرام">
+        <i class="fab fa-telegram-plane"></i>
+      </a>
+      <a class="footer-icon" href="https://www.tiktok.com/@sb_model1" target="_blank" title="تيك توك">
+        <i class="fab fa-tiktok"></i>
+      </a>
+      <a class="footer-icon" href="https://wa.me/560326460" target="_blank" title="واتساب">
+        <i class="fab fa-whatsapp"></i>
+      </a>
+      <a class="footer-icon" href="https://wa.me/213560326460" target="_blank" title="هاتف">
+        <i class="fas fa-phone"></i>
+      </a>
+    </div>
+    <div class="copyright">© 2025 - Cashflow Agency. All rights reserved.</div>
+  </footer>
+
+<style>
+  .testimonial-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 10px;
+  }
+  .testimonial-card {
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #fff;
+    border-radius: 18px;
+    padding: 24px 18px 18px 18px;
+    width: 300px;
+    min-width: 220px;
+    max-width: 100%;
+    box-shadow: 0 0 18px rgba(0,255,255,0.18);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    transition: box-shadow 0.3s, transform 0.3s;
+  }
+  .testimonial-card:hover {
+    box-shadow: 0 0 32px #00eaff, 0 0 24px #fff;
+    transform: scale(1.04);
+  }
+  .testimonial-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #00eaff;
+    box-shadow: 0 0 8px #00eaff88;
+    flex-shrink: 0;
+  }
+  .testimonial-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .testimonial-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+  .testimonial-name span {
+    color: #00eaff;
+    font-size: 0.95em;
+    margin-right: 6px;
+    opacity: 0.85;
+  }
+  .testimonial-text {
+    font-size: 1rem;
+    color: #eaf6ff;
+    line-height: 1.7;
+    text-align: right;
+  }
+  @media (max-width: 900px) {
+    .testimonial-card { width: 220px; padding: 16px 8px; }
+  }
+  @media (max-width: 700px) {
+    .testimonial-container { gap: 12px; }
+    .testimonial-card { width: 98vw; min-width: 0; max-width: 100%; }
+    .testimonial-avatar { width: 40px; height: 40px; }
+  }
+  /* إحصائيات مميزة */
+  .stats-cards-container {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 32px;
+    max-width: 900px;
+    margin: 0 auto 0 auto;
+    flex-wrap: wrap;
+  }
+  .stat-card {
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 22px;
+    box-shadow: 0 0 32px #27ff5a55, 0 0 12px #00eaff44;
+    padding: 32px 36px 24px 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 200px;
+    max-width: 260px;
+    flex: 1 1 220px;
+    transition: box-shadow 0.3s, transform 0.3s;
+    border: 1.5px solid #27ff5a;
+    position: relative;
+  }
+  .stat-card:hover {
+    box-shadow: 0 0 48px #27ff5a, 0 0 32px #00eaff, 0 0 24px #fff;
+    transform: translateY(-6px) scale(1.04);
+    border-color: #00eaff;
+  }
+  .stat-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.3rem;
+    color: #fff;
+    margin-bottom: 18px;
+    box-shadow: 0 0 18px #27ff5a88, 0 0 8px #00eaff88;
+    border: 2.5px solid #fff;
+    transition: box-shadow 0.3s, border-color 0.3s;
+  }
+  .stat-card:hover .stat-icon {
+    box-shadow: 0 0 32px #00eaff, 0 0 24px #27ff5a;
+    border-color: #27ff5a;
+  }
+  .stat-text {
+    color: #27ff5a;
+    font-size: 1.35rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px #00eaff88, 0 0 2px #fff;
+    text-align: center;
+    margin-top: 2px;
+  }
+  @media (max-width: 900px) {
+    .stats-cards-container { gap: 18px; }
+    .stat-card { padding: 24px 10px 18px 10px; min-width: 140px; }
+    .stat-icon { width: 48px; height: 48px; font-size: 1.5rem; }
+    .stat-text { font-size: 1.1rem; }
+  }
+</style>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    // ...existing code...
+    // Language dropdown
+    const langBtn = document.getElementById('langBtn');
+    const langDropdown = document.getElementById('langDropdown');
+    langBtn.onclick = function(e) {
+      e.stopPropagation();
+      langDropdown.style.display = langDropdown.style.display === 'block' ? 'none' : 'block';
+    };
+    document.body.onclick = function(e) {
+      if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
+        langDropdown.style.display = 'none';
+      }
+    };
+
+    // Multi-language support
+    const translations = {
+      ar: {
+        logo: '🌟 Cashflow Agency 🌟',
+        contact: 'اتصل بنا',
+        packages: [
+          {
+            title: 'إحتراف التداول',
+            desc: "هل أنت مبتدئ في عالم التداول ولا تعرف من أين تبدأ ؟<br>هذه الدورة المجانية صنعت خصيصًا لك !<br>تعلم الأساسيات بخطوات بسيطة وبأسلوب ممتع وسهل.<br>ستحصل على معلومات قيّمة لم تسمع بها من قبل.<br>بداية رحلتك نحو الربح تبدأ من هنا، مجانًا !<br>لا تضيع الفرصة، مستقبلك الاستثماري يبدأ الآن.",
+            btn: 'ابدأ الآن'
+          },
+          {
+            title: 'كتابك حياتك',
+            desc: "نقدم لك أعظم كتاب في حياتك، مجانًا !<br>هذا الكتاب لا تقرأه فقط، بل تعيشه وتبدأ تطبيقه.<br>فيه خلاصة تجارب وأفكار تغيّر عقلك وطريقتك في التفكير.<br>مفاتيح النجاح والحرية المالية بين يديك الآن.<br>استثمر وقتك في المعرفة، وابدأ التغيير.<br>لأن النجاح يبدأ من العقل، اقرأ لتنهض !",
+            btn: 'احصل عليه'
+          },
+          {
+            title: 'التجارة الإلكترونية',
+            desc: "تعلّم كيف تنشئ متجرك وتبيع منتجاتك حول العالم.<br>نكشف لك أسرار الشحن والتسويق والتحويلات الناجحة.<br>طرق حديثة للربح من الإنترنت بسهولة وذكاء.<br>محتوى عملي واحترافي من رواد التجارة الإلكترونية.<br>كل ما تحتاجه للنجاح متوفر داخل هذه الباقة.<br>انطلق اليوم نحو مشروعك الأول بثقة !",
+            btn: 'تعلم الآن'
+          },
+          {
+            title: 'التجارة الرقمية',
+            desc: "استثمر في أقوى المجالات بالعالم الرقمي.<br>تعلم كيف تنشئ مصادر دخل رقمية دائمة.<br>نصائح من محترفين ومجربين في هذا المجال.<br>بيع منتجات رقمية، خدمات، أو دورات بسهولة.<br>أنت فقط بحاجة للإنترنت وعقل مفتوح للربح.<br>اجعل العالم الرقمي مصدر دخلك الحقيقي.",
+            btn: 'ابدأ'
+          },
+          {
+            title: 'التجارة الحرة',
+            desc: "هنا تبدأ رحلتك نحو الاستقلال المالي الحقيقي.<br>تعلم فنون البيع والشراء في الأسواق المفتوحة.<br>استراتيجيات قوية في التجارة المحلية والعالمية.<br>تحرر من القيود، وابدأ تجارتك بدون حدود.<br>لا تحتاج إلى رأس مال كبير لتبدأ !<br>فقط قرار وإرادة، والباقي نحن نعلمك إياه.",
+            btn: 'استكشف'
+          },
+          {
+            title: 'تطوير المواقع والتجارة بها',
+            desc: "امتلك موقعك الإلكتروني وابدأ مشروعك بنفسك.<br>تعلم بناء صفحات احترافية تجذب العملاء.<br>دمج التجارة مع التقنية = أرباح مضاعفة.<br>دورة عملية بأسلوب بسيط وسهل الفهم.<br>لا تحتاج خبرة برمجية مسبقة، فقط شغف للتعلم.<br>اصنع موقعك وابدأ البيع مباشرة.",
+            btn: 'طور مشروعك'
+          },
+          {
+            title: 'مدرسة التصميم',
+            desc: "هل تحب التصميم؟ حوّل شغفك إلى مهنة مربحة !<br>تعليم شامل للفوتوشوب، تصميم الشعارات، والمواقع.<br>أسرار الاحتراف والتعامل مع العملاء خطوة بخطوة.<br>مشاريع تطبيقية وشرح عملي مباشر.<br>ابدأ من الصفر وكن مصممًا محترفًا خلال أسابيع.<br>أنشئ عملك الخاص أو اعمل بشكل حر أونلاين.",
+            btn: 'سجل الآن'
+          },
+          {
+            title: 'شراء العملات الرقمية',
+            desc: "تعرّف على أفضل طرق شراء العملات الرقمية بأمان.<br>نشرح لك كل التفاصيل عن BTC، USDT، EUR، DZD.<br>كيفية فتح محفظة، حفظ المفاتيح، وتفادي النصب.<br>فيديوهات تعليمية ودعم مباشر.<br>حتى لو كنت مبتدئًا، ستفهم بسهولة وتشتري بثقة.<br>هذا هو المستقبل، كن من أوائل المستثمرين.",
+            btn: 'ابدأ الاستثمار'
+          },
+          {
+            title: 'شهرتك تبدأ من هنا',
+            desc: "لا تحتاج أن تكون مشهورًا لتبدأ، بل ابدأ لتصبح مشهورًا !<br>في هذه الباقة نكشف لك كيف تصنع علامة شخصية قوية.<br>نصائح عملية للظهور والانتشار في التيك توك، إنستغرام، ويوتيوب.<br>نعلمك كيف تحول المتابعين إلى فرص ومال حقيقي.<br>استغل قوتك وابدأ بناء مجتمعك الآن.<br>هذه هي فرصتك لتبدأ قصة النجاح أمام العالم.",
+            btn: 'ابدأ رحلتك'
+          }
+        ]
+      },
+      en: {
+        logo: '🌟 Cashflow Agency 🌟',
+        contact: 'Contact Us',
+        packages: [
+          {
+            title: 'Free Trading Course',
+            desc: "Are you a beginner in the trading world and don't know where to start?<br>This free course is made for you!<br>Learn the basics in simple steps and in an enjoyable and easy way.<br>You will get valuable information that you haven't heard before.<br>Your journey to profit starts here, for free!<br>Don't miss the opportunity, your investment future starts now.",
+            btn: 'Start Now'
+          },
+          {
+            title: 'Your Life Book',
+            desc: "We offer you the greatest book in your life, for free!<br>This book is not just for reading, but for living and applying.<br>It contains the essence of experiences and ideas that change your mind and way of thinking.<br>The keys to success and financial freedom are now in your hands.<br>Invest your time in knowledge and start changing.<br>Because success starts in the mind, read to rise!",
+            btn: 'Get It'
+          },
+          {
+            title: 'E-Commerce',
+            desc: "Learn how to create your store and sell products worldwide.<br>We reveal the secrets of shipping, marketing, and successful conversions.<br>Modern ways to profit from the internet easily and smartly.<br>Practical and professional content from e-commerce pioneers.<br>Everything you need for success is inside this package.<br>Start your first project today with confidence!",
+            btn: 'Learn Now'
+          },
+          {
+            title: 'Digital Trade',
+            desc: "Invest in the strongest fields in the digital world.<br>Learn how to create permanent digital income sources.<br>Tips from professionals and experienced people in the field.<br>Sell digital products, services, or courses easily.<br>You only need the internet and an open mind to profit.<br>Make the digital world your real source of income.",
+            btn: 'Start'
+          },
+          {
+            title: 'Free Trade',
+            desc: "Here begins your journey to true financial independence.<br>Learn the arts of buying and selling in open markets.<br>Strong strategies in local and global trade.<br>Break free from restrictions and start your business without limits.<br>You don't need a large capital to start!<br>Just a decision and will, and we teach you the rest.",
+            btn: 'Explore'
+          },
+          {
+            title: 'Website Development & Trade',
+            desc: "Own your website and start your project yourself.<br>Learn to build professional pages that attract customers.<br>Combining trade with technology = double profits.<br>A practical course in a simple and easy-to-understand style.<br>No prior programming experience needed, just passion to learn.<br>Create your site and start selling directly.",
+            btn: 'Develop Your Project'
+          },
+          {
+            title: 'Design School',
+            desc: "Do you love design? Turn your passion into a profitable career!<br>Comprehensive education for Photoshop, logo, and web design.<br>Secrets of professionalism and dealing with clients step by step.<br>Practical projects and direct practical explanation.<br>Start from scratch and become a professional designer in weeks.<br>Create your own business or work freelance online.",
+            btn: 'Register Now'
+          },
+          {
+            title: 'Buy Digital Currencies',
+            desc: "Learn the best ways to buy digital currencies safely.<br>We explain all the details about BTC, USDT, EUR, DZD.<br>How to open a wallet, save keys, and avoid scams.<br>Educational videos and direct support.<br>Even if you are a beginner, you will understand easily and buy with confidence.<br>This is the future, be among the first investors.",
+            btn: 'Start Investing'
+          },
+          {
+            title: 'Your Fame Starts Here',
+            desc: "You don't need to be famous to start, start to become famous!<br>In this package, we reveal how to build a strong personal brand.<br>Practical tips for appearing and spreading on TikTok, Instagram, and YouTube.<br>We teach you how to turn followers into real opportunities and money.<br>Use your power and start building your community now.<br>This is your chance to start your success story before the world.",
+            btn: 'Start Your Journey'
+          }
+        ]
+      },
+      fr: {
+        logo: '🌟 Cashflow Agency 🌟',
+        contact: 'Contactez-nous',
+        packages: [
+          {
+            title: 'Cours Gratuit',
+            desc: "Vous êtes débutant dans le trading et ne savez pas par où commencer ?<br>Ce cours gratuit est fait pour vous !<br>Apprenez les bases étape par étape de manière ludique et facile.<br>Vous recevrez des informations précieuses jamais entendues auparavant.<br>Votre parcours vers le profit commence ici, gratuitement !<br>Ne ratez pas l'opportunité, votre avenir d'investissement commence maintenant.",
+            btn: 'Commencer maintenant'
+          },
+          {
+            title: 'Le Livre de Votre Vie',
+            desc: "Nous vous offrons le plus grand livre de votre vie, gratuitement !<br>Ce livre n'est pas seulement à lire, mais à vivre et à appliquer.<br>Il contient l'essence d'expériences et d'idées qui changent votre esprit et votre façon de penser.<br>Les clés du succès et de la liberté financière sont maintenant entre vos mains.<br>Investissez votre temps dans la connaissance et commencez à changer.<br>Parce que le succès commence dans l'esprit, lisez pour vous élever !",
+            btn: 'Obtenez-le'
+          },
+          {
+            title: 'E-Commerce',
+            desc: "Apprenez à créer votre boutique et à vendre des produits dans le monde entier.<br>Nous révélons les secrets de l'expédition, du marketing et des conversions réussies.<br>Moyens modernes de gagner de l'argent sur Internet facilement et intelligemment.<br>Contenu pratique et professionnel des pionniers du e-commerce.<br>Tout ce dont vous avez besoin pour réussir est dans ce package.<br>Lancez votre premier projet aujourd'hui avec confiance !",
+            btn: 'Apprendre maintenant'
+          },
+          {
+            title: 'Commerce Digital',
+            desc: "Investissez dans les domaines les plus puissants du monde numérique.<br>Apprenez à créer des sources de revenus numériques permanentes.<br>Conseils de professionnels et d'expérimentés dans le domaine.<br>Vendez des produits numériques, des services ou des cours facilement.<br>Vous n'avez besoin que d'Internet et d'un esprit ouvert pour gagner.<br>Faites du monde numérique votre véritable source de revenus.",
+            btn: 'Commencer'
+          },
+          {
+            title: 'Commerce Libre',
+            desc: "Ici commence votre voyage vers une véritable indépendance financière.<br>Apprenez les arts de l'achat et de la vente sur les marchés ouverts.<br>Stratégies solides dans le commerce local et mondial.<br>Libérez-vous des restrictions et commencez votre entreprise sans limites.<br>Vous n'avez pas besoin d'un grand capital pour commencer !<br>Juste une décision et une volonté, et nous vous apprenons le reste.",
+            btn: 'Explorer'
+          },
+          {
+            title: 'Développement de Sites & Commerce',
+            desc: "Possédez votre site web et lancez votre projet vous-même.<br>Apprenez à créer des pages professionnelles qui attirent les clients.<br>Combiner le commerce avec la technologie = profits doublés.<br>Un cours pratique dans un style simple et facile à comprendre.<br>Aucune expérience préalable en programmation requise, juste la passion d'apprendre.<br>Créez votre site et commencez à vendre directement.",
+            btn: 'Développez votre projet'
+          },
+          {
+            title: 'École de Design',
+            desc: "Vous aimez le design ? Transformez votre passion en une carrière rentable !<br>Formation complète pour Photoshop, logos et conception de sites web.<br>Secrets du professionnalisme et gestion des clients étape par étape.<br>Projets pratiques et explication directe.<br>Commencez de zéro et devenez designer professionnel en quelques semaines.<br>Créez votre propre entreprise ou travaillez en freelance en ligne.",
+            btn: 'Inscrivez-vous maintenant'
+          },
+          {
+            title: 'Acheter des Cryptomonnaies',
+            desc: "Découvrez les meilleures façons d'acheter des cryptomonnaies en toute sécurité.<br>Nous expliquons tous les détails sur BTC, USDT, EUR, DZD.<br>Comment ouvrir un portefeuille, sauvegarder les clés et éviter les arnaques.<br>Vidéos éducatives et support direct.<br>Même si vous êtes débutant, vous comprendrez facilement et achèterez en toute confiance.<br>C'est l'avenir, soyez parmi les premiers investisseurs.",
+            btn: 'Commencer à investir'
+          },
+          {
+            title: 'Votre Célébrité Commence Ici',
+            desc: "Vous n'avez pas besoin d'être célèbre pour commencer, commencez pour devenir célèbre !<br>Dans ce package, nous vous révélons comment construire une marque personnelle forte.<br>Conseils pratiques pour apparaître et se répandre sur TikTok, Instagram et YouTube.<br>Nous vous apprenons comment transformer les abonnés en opportunités et en argent réel.<br>Utilisez votre force et commencez à construire votre communauté maintenant.<br>C'est votre chance de commencer votre histoire de succès devant le monde.",
+            btn: 'Commencez votre parcours'
+          }
+        ]
+      }
+    };
+
+    function changeLanguage(lang) {
+      // تمييز زر اللغة المختار
+      document.querySelectorAll('.language-button').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.lang === lang) btn.classList.add('active');
+      });
+      // تغيير النصوص
+      document.querySelector('.logo').innerHTML = translations[lang].logo;
+      document.getElementById('contactBtn').innerHTML = translations[lang].contact;
+      // تغيير الباقات
+      const packageCards = document.querySelectorAll('.package-card');
+      translations[lang].packages.forEach((pkg, i) => {
+        if (packageCards[i]) {
+          packageCards[i].querySelector('.package-title').innerHTML = pkg.title;
+          packageCards[i].querySelector('.package-desc').innerHTML = pkg.desc;
+          packageCards[i].querySelector('.package-btn').innerHTML = pkg.btn;
+        }
+      });
+      // تغيير اتجاه الصفحة للعربية
+      document.body.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    }
+
+    document.querySelectorAll('.language-button').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const lang = btn.dataset.lang;
+        changeLanguage(lang);
+        setTimeout(() => { langDropdown.style.display = 'none'; }, 150);
+      });
+    });
+
+    // Contact modal
+    const contactBtn = document.getElementById('contactBtn');
+    const contactModal = document.getElementById('contactModal');
+    contactBtn.onclick = function() {
+      contactModal.style.display = 'flex';
+    };
+    function closeContact() {
+      contactModal.style.display = 'none';
+    }
+
+    // زر الإيميل الدائري ونافذة التواصل المنبثقة
+    const fixedEmailBtn = document.getElementById('fixedEmailBtn');
+    const contactPopup = document.getElementById('contactPopup');
+    const closeContactPopup = document.getElementById('closeContactPopup');
+    fixedEmailBtn.onclick = function() {
+      contactPopup.classList.add('show');
+    };
+    closeContactPopup.onclick = function() {
+      contactPopup.classList.remove('show');
+    };
+    // إغلاق النافذة عند الضغط خارجها
+    contactPopup.onclick = function(e) {
+      if (e.target === contactPopup) contactPopup.classList.remove('show');
+    };
+    // EmailJS إعداد النموذج وإرسال الرسالة
+    (function(){
+      emailjs.init('YOUR_PUBLIC_KEY'); // ضع هنا Public Key من EmailJS
+    })();
+    document.getElementById('contactForm').onsubmit = async function(e) {
+      e.preventDefault();
+      var status = document.getElementById('contactStatus');
+      status.textContent = 'جاري الإرسال...';
+      status.style.color = '#fff';
+
+      // جلب القيم من الحقول
+      const name = this.full_name.value.trim();
+      const email = this.user_email.value.trim();
+      const phone = this.user_phone.value.trim();
+      const messageText = this.message.value.trim();
+
+      // تحقق من الحقول
+      if (!name || !email || !phone || !messageText) {
+        status.textContent = '❌ يرجى تعبئة جميع الحقول بشكل صحيح.';
+        status.style.color = '#ff003c';
+        return;
+      }
+
+      // إعداد رسالة تيليجرام
+      const token = '8194506415:AAEcJ6bzmJFd02dcYt0fB7O5oOumSR2cL78';
+      const chat_id = '5968641533';
+      const tgMessage = `\n📥 رسالة جديدة من الموقع:\n\n👤 الاسم: ${name}\n📧 الإيميل: ${email}\n📱 الهاتف: ${phone}\n📝 الرسالة: ${messageText}\n`;
+
+      let telegramOk = false;
+      try {
+        const tgRes = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id, text: tgMessage }),
+        });
+        telegramOk = tgRes.ok;
+      } catch (err) {
+        telegramOk = false;
+      }
+
+      // محاولة إرسال نسخة إلى البريد (اختياري)
+      let emailOk = false;
+      try {
+        await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+          to_email: 'cashflowagency.n1@gmail.com',
+          from_name: name,
+          user_email: email,
+          user_phone: phone,
+          message: messageText,
+          formatted_message: tgMessage
+        });
+        emailOk = true;
+      } catch (err) {
+        emailOk = false;
+      }
+
+      if (telegramOk) {
+        status.textContent = '✅ تم إرسال الرسالة بنجاح!';
+        status.style.color = '#27ff5a';
+        document.getElementById('contactForm').reset();
+        setTimeout(function(){
+          contactPopup.classList.remove('show');
+          status.textContent = '';
+        }, 1500);
+      } else {
+        status.textContent = '❌ حدث خطأ أثناء الإرسال. يرجى إعادة المحاولة.';
+        status.style.color = '#ff003c';
+      }
+    };
+  </script>
+</body>
+</html>
+
