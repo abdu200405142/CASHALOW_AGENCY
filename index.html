@@ -1,6 +1,51 @@
 <script>
 const OPENAI_API_KEY = "YOUR_API_KEY";
 </script>
+<script>
+// كود الدردشة: إرسال الرسالة إلى السيرفر واستقبال الردود
+const chatInput = document.getElementById('ai-bot-input');
+const chatSend = document.getElementById('ai-bot-send');
+const chatMessages = document.querySelector('.ai-bot-messages');
+const userId = '_' + Math.random().toString(36).substr(2, 9);
+const ws = new WebSocket('wss://cashalow-agency.onrender.com');
+ws.onopen = () => ws.send(JSON.stringify({ userId }));
+ws.onmessage = (event) => {
+  try {
+    const data = JSON.parse(event.data);
+    if (data.userId === userId || !data.userId) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'ai-bot-msg ai-bot-msg-bot';
+      msgDiv.innerText = data.text;
+      chatMessages.appendChild(msgDiv);
+      chatMessages.scrollTop = 99999;
+    }
+  } catch {}
+};
+function sendChatMessage() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+  // أضف رسالة المستخدم في الواجهة
+  const msgDiv = document.createElement('div');
+  msgDiv.className = 'ai-bot-msg ai-bot-msg-user';
+  msgDiv.innerText = text;
+  chatMessages.appendChild(msgDiv);
+  chatMessages.scrollTop = 99999;
+  // أرسل الرسالة إلى السيرفر
+  fetch('https://cashalow-agency.onrender.com/api/send', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userId, message: text })
+  });
+  chatInput.value = '';
+}
+chatSend.onclick = sendChatMessage;
+chatInput.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    sendChatMessage();
+  }
+});
+</script>
 </style>
 <!-- بوت روبوت أزرق متوهج في الزاوية اليسرى السفلى -->
 <div id="ai-bot-widget">
