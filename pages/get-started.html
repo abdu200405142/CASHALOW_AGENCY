@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ابدأ الآن | CASHALOW AGENCY</title>
+  <link rel="stylesheet" href="../navbar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .legendary-title-box {
+      display: inline-block;
+      background: linear-gradient(90deg,#ffe259 0%,#ffa751 100%);
+      color: #222;
+      font-size: 2.1rem;
+      font-weight: bold;
+      border-radius: 18px;
+      box-shadow: 0 0 18px 4px #ffe25999, 0 0 0 2px #ffa751cc;
+      padding: 12px 38px;
+      margin: 0 auto 24px auto;
+      text-align: center;
+      letter-spacing: 1.5px;
+      transition: box-shadow 0.22s, filter 0.22s;
+      user-select: none;
+      border: none;
+      position: relative;
+    }
+    .legendary-title-box:hover, .legendary-title-box:active {
+      box-shadow: 0 0 36px 8px #ffe259cc, 0 0 0 4px #ffa751ee;
+      filter: brightness(1.08) drop-shadow(0 0 16px #ffe259cc);
+    }
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 80%, #ff003c 100%);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .section-title {
+      color: #00c6fb;
+      font-size: 2.2rem;
+      margin-bottom: 18px;
+      text-align: center;
+      margin-top: 60px;
+    }
+    .section-desc {
+      color: #eaf6ff;
+      font-size: 1.1rem;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .packages {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 38px 28px;
+      margin: 36px auto 24px auto;
+      width: 100%;
+      max-width: 1200px;
+      position: relative;
+    }
+    .package-row-separator {
+      grid-column: 1 / -1;
+      height: 2px;
+      background: linear-gradient(90deg, #00c6fb33 0%, #fff0 50%, #00c6fb33 100%);
+      margin: 12px 0 8px 0;
+      border-radius: 2px;
+    }
+    .package-card {
+      background: linear-gradient(135deg,rgba(20,20,30,0.98) 80%, var(--glow,#00c6fb) 120%);
+      color: #fff;
+      border-radius: 20px;
+      box-shadow: 0 0 24px 2px var(--glow, #00c6fb55), 0 0 0 2px var(--glow, #00c6fb);
+      border: 2px solid var(--glow, #00c6fb);
+      padding: 22px 14px 18px 14px;
+      display: flex; flex-direction: column; align-items: center;
+      transition: transform 0.22s, box-shadow 0.22s, background 0.22s, border 0.22s;
+      position: relative;
+      min-height: 260px;
+      max-width: 340px;
+      margin: 0 auto;
+      cursor: pointer;
+      overflow: visible;
+      box-sizing: border-box;
+    }
+    .package-card.selected {
+      background: linear-gradient(135deg,rgba(16,31,16,1) 80%, var(--glow,#00ff80) 120%);
+      box-shadow: 0 0 60px 8px var(--glow, #00ff80), 0 0 0 4px var(--glow, #00ff80);
+      border-color: var(--glow, #00ff80);
+      z-index: 2;
+    }
+    .package-card.selected .package-title {
+      font-size: 2.1rem;
+      text-shadow: 0 0 16px var(--glow, #00ff80);
+    }
+    .package-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 0 48px 8px var(--glow, #00c6fb99), 0 0 0 3px var(--glow, #00c6fb);
+      background: rgba(30,30,40,0.98);
+    }
+    .package-badge {
+      position: absolute;
+      top: -22px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      font-size: 1.2rem;
+      font-weight: bold;
+      padding: 6px 18px;
+      border-radius: 16px;
+      background: linear-gradient(90deg,#ff003c 0%,#ffb347 100%);
+      color: #fff;
+      box-shadow: 0 2px 12px #ff003c55;
+      letter-spacing: 1px;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .package-badge.star {
+      background: linear-gradient(90deg,#ffe259 0%,#ffa751 100%);
+      color: #222;
+      font-size: 1.3rem;
+      font-weight: bold;
+      box-shadow: 0 2px 16px #ffe25999;
+    }
+    .package-badge.shield {
+      background: linear-gradient(90deg,#e0e0e0 0%,#b0b0b0 100%);
+      color: #222;
+      font-size: 1.1rem;
+      font-weight: bold;
+      box-shadow: 0 2px 12px #b0b0b099;
+    }
+    .package-title-box {
+      background: linear-gradient(90deg, var(--glow,#00c6fb) 0%, #fff0 100%);
+      border-radius: 12px;
+      box-shadow: 0 0 16px 2px var(--glow,#00c6fb66);
+      padding: 7px 0 7px 0;
+      margin-bottom: 12px;
+      width: 90%;
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #fff;
+      letter-spacing: 1px;
+      position: relative;
+      z-index: 2;
+      border: 1.5px solid var(--glow,#00c6fb);
+      transition: font-size 0.22s;
+      user-select: none;
+    }
+    .package-title {
+      font-size: 1.35rem;
+      font-weight: bold;
+      color: #fff;
+      letter-spacing: 1px;
+      margin: 0;
+      transition: font-size 0.22s;
+    }
+    .package-card.selected .package-title-box {
+      font-size: 1.5rem;
+      box-shadow: 0 0 32px 4px var(--glow,#00ff80);
+    }
+    .package-card.selected .package-title {
+      font-size: 1.7rem;
+      text-shadow: 0 0 16px var(--glow, #00ff80);
+    }
+    .package-price {
+      font-size: 1.18rem;
+      color: #00c6fb;
+      margin-bottom: 2px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+    .package-balance {
+      font-size: 1.13rem;
+      color: #eaf6ff;
+      margin-bottom: 2px;
+      font-weight: bold;
+    }
+    .package-duration {
+      font-size: 1.13rem;
+      color: #aaa;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .package-features {
+      margin-bottom: 18px;
+      padding-right: 0;
+      list-style: none;
+      padding-left: 0;
+      width: 100%;
+    }
+    .package-features li {
+      margin-bottom: 6px;
+      font-size: 1.09rem;
+      position: relative;
+      padding-right: 22px;
+      text-align: right;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+    }
+    .package-features li:before {
+      content: '✔️';
+      position: absolute;
+      right: 0;
+      font-size: 1.18rem;
+      color: var(--glow, #00c6fb);
+      filter: drop-shadow(0 0 4px var(--glow,#00c6fb));
+    }
+    .package-btn {
+      border: none;
+      border-radius: 24px;
+      padding: 8px 18px;
+      font-size: 1.08rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: #fff;
+      margin-top: 8px;
+      box-shadow: 0 2px 12px var(--glow, #005bea33);
+      transition: box-shadow 0.2s, filter 0.2s, background 0.2s;
+      min-width: 110px;
+      background: var(--btn, linear-gradient(90deg,#00c6fb 0%,#005bea 100%));
+      text-shadow: 0 1px 8px #000a;
+      filter: drop-shadow(0 0 8px var(--glow,#00c6fb33));
+    }
+    .package-btn:hover {
+      filter: brightness(1.18) drop-shadow(0 0 12px var(--glow,#00c6fb99));
+      box-shadow: 0 4px 24px var(--glow, #00c6fb66);
+      background: var(--btn-hover, linear-gradient(90deg,#00eaff 0%,#005bea 100%));
+    }
+    .package-card.selected .package-btn {
+      background: var(--btn-active, linear-gradient(90deg,#27ff5a 0%,#00ff80 100%));
+      filter: brightness(1.2) drop-shadow(0 0 16px var(--glow,#00ff80));
+      box-shadow: 0 0 24px var(--glow, #00ff80);
+    }
+    .package-3dicon {
+      font-size: 2.2rem;
+      margin-bottom: 6px;
+      filter: drop-shadow(0 0 8px var(--glow,#00c6fb99));
+      text-align: center;
+      user-select: none;
+      line-height: 1.1;
+      transition: filter 0.2s;
+    }
+    .package-card:hover .package-3dicon {
+      filter: drop-shadow(0 0 16px var(--glow,#00c6fbcc));
+    }
+    @media (max-width: 1200px) {
+      .packages { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 800px) {
+      .packages { grid-template-columns: 1fr; }
+      .package-card { max-width: 98vw; }
+    }
+    @media (max-width: 900px) {
+      .packages { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body dir="rtl">
+  <nav class="navbar" style="position:fixed; top:0; left:0; width:100%; background:rgba(0,0,0,0.6); z-index:1000;">
+    <div class="navbar__logo" style="font-size:2rem; font-weight:bold; background:linear-gradient(90deg,#00c6fb 0%,#005bea 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-fill-color:transparent;letter-spacing:1px;">Cashflow Agency</div>
+    <div class="navbar__links">
+      <a href="../index.html" class="navbar__link">Pricing</a>
+      <a href="../index.html" class="navbar__link">License Activation</a>
+      <a href="../index.html" class="navbar__link">Buy Coins</a>
+      <a href="contact.html" class="navbar__link">Contact Us</a>
+    </div>
+    <a href="get-started.html" class="navbar__cta" style="padding:7px 18px; font-size:1rem; min-width:unset;">Get Started</a>
+    <div class="navbar__hamburger" aria-label="Open menu" tabindex="0">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+  <div style="height:80px;"></div>
+  <div style="text-align:center; margin-bottom:18px; margin-top:60px;">
+    <span class="legendary-title-box">باقات الأسطورية</span>
+  </div>
+  <div style="text-align:center; margin-bottom:24px;">
+    <span style="font-size:1.18rem; color:#fff; font-weight:bold; background:linear-gradient(90deg,#00c6fb 0%,#ffe259 100%); padding:7px 22px; border-radius:14px; box-shadow:0 0 12px #ffe25955,0 0 8px #00c6fb88; display:inline-block; margin-bottom:6px; letter-spacing:1px;">
+      ركز في إختيار الباقة الأفضل التي سوف تغير حياتك و تسطر مصيرك
+    </span>
+  </div>
+  <div class="packages">
+    <!-- Flash USDT Starter -->
+    <div class="package-card" style="--glow:#27ff5a;--btn:linear-gradient(90deg,#27ff5a 0%,#00c853 100%);--btn-hover:linear-gradient(90deg,#00ff80 0%,#27ff5a 100%);--btn-active:linear-gradient(90deg,#27ff5a 0%,#00ff80 100%);">
+      <div class="package-3dicon" style="
+        background: radial-gradient(circle at 60% 40%, var(--glow,#27ff5a) 0%, #fff0 70%);
+        box-shadow: 0 0 24px 8px var(--glow,#27ff5a99), 0 2px 8px #0008;
+        border-radius: 50%;
+        width: 62px; height: 62px; display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 6px auto; font-size:2.2rem; position:relative; z-index:2;
+      ">⚡</div>
+      <div class="package-title-box" style="background:linear-gradient(90deg,#27ff5a33 0%,#fff0 100%);border-color:#27ff5a;box-shadow:0 0 12px 2px #27ff5a66;"> <span class="package-title">Flash USDT Starter</span></div>
+      <div class="package-price">$99</div>
+      <div class="package-balance">3,000 USDT</div>
+      <div class="package-duration">7 Days</div>
+      <ul class="package-features">
+        <li>7-Day active duration</li>
+        <li>Basic transaction speed</li>
+        <li>Email-only support</li>
+        <li>Single wallet access</li>
+        <li>No API or customizations</li>
+      </ul>
+      <button class="package-btn">Get Started</button>
+    </div>
+    <!-- Flash USDT Plus -->
+    <div class="package-card" style="--glow:#00c6fb;--btn:linear-gradient(90deg,#00c6fb 0%,#00eaff 100%);--btn-hover:linear-gradient(90deg,#00eaff 0%,#00c6fb 100%);--btn-active:linear-gradient(90deg,#00eaff 0%,#00c6fb 100%);">
+      <div class="package-3dicon" style="
+        background: radial-gradient(circle at 60% 40%, var(--glow,#00c6fb) 0%, #fff0 70%);
+        box-shadow: 0 0 24px 8px var(--glow,#00c6fb99), 0 2px 8px #0008;
+        border-radius: 50%;
+        width: 62px; height: 62px; display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 6px auto; font-size:2.2rem; position:relative; z-index:2;
+      ">🧠</div>
+      <div class="package-badge">Most Popular</div>
+      <div class="package-title-box" style="background:linear-gradient(90deg,#00c6fb33 0%,#fff0 100%);border-color:#00c6fb;box-shadow:0 0 12px 2px #00c6fb66;"> <span class="package-title">Flash USDT Plus</span></div>
+      <div class="package-price">$199</div>
+      <div class="package-balance">25,000 USDT</div>
+      <div class="package-duration">30 Days</div>
+      <ul class="package-features">
+        <li>30-Days active duration</li>
+        <li>Faster transaction execution</li>
+        <li>Priority chat support</li>
+        <li>Multi-wallet support</li>
+        <li>Basic API usage</li>
+      </ul>
+      <button class="package-btn">Get Started</button>
+    </div>
+    <!-- Flash USDT Premium -->
+    <div class="package-card" style="--glow:#b0b0b0;--btn:linear-gradient(90deg,#e0e0e0 0%,#b0b0b0 100%);--btn-hover:linear-gradient(90deg,#b0b0b0 0%,#e0e0e0 100%);--btn-active:linear-gradient(90deg,#e0e0e0 0%,#b0b0b0 100%);">
+      <div class="package-3dicon" style="
+        background: radial-gradient(circle at 60% 40%, var(--glow,#b0b0b0) 0%, #fff0 70%);
+        box-shadow: 0 0 24px 8px var(--glow,#b0b0b099), 0 2px 8px #0008;
+        border-radius: 50%;
+        width: 62px; height: 62px; display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 6px auto; font-size:2.2rem; position:relative; z-index:2;
+      ">🛡️</div>
+      <div class="package-badge shield"><i class="fas fa-shield-alt"></i> Safe</div>
+      <div class="package-title-box" style="background:linear-gradient(90deg,#b0b0b033 0%,#fff0 100%);border-color:#b0b0b0;box-shadow:0 0 12px 2px #b0b0b066;"> <span class="package-title">Flash USDT Premium</span></div>
+      <div class="package-price">$499</div>
+      <div class="package-balance">100,000 USDT</div>
+      <div class="package-duration">90 Days</div>
+      <ul class="package-features">
+        <li>90-Days active duration</li>
+        <li>High-speed transaction engine</li>
+        <li>24/7 dedicated support</li>
+        <li>Multi-wallet + whitelist control</li>
+        <li>Full REST API access</li>
+      </ul>
+      <button class="package-btn">Get Started</button>
+    </div>
+    <!-- Flash USDT Executive -->
+    <div class="package-card" style="--glow:#ff5fa2;--btn:linear-gradient(90deg,#ff5fa2 0%,#ff3c7e 100%);--btn-hover:linear-gradient(90deg,#ff3c7e 0%,#ff5fa2 100%);--btn-active:linear-gradient(90deg,#ff5fa2 0%,#ff3c7e 100%);">
+      <div class="package-3dicon" style="
+        background: radial-gradient(circle at 60% 40%, var(--glow,#ff5fa2) 0%, #fff0 70%);
+        box-shadow: 0 0 24px 8px var(--glow,#ff5fa299), 0 2px 8px #0008;
+        border-radius: 50%;
+        width: 62px; height: 62px; display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 6px auto; font-size:2.2rem; position:relative; z-index:2;
+      ">🧩</div>
+      <div class="package-title-box" style="background:linear-gradient(90deg,#ff5fa233 0%,#fff0 100%);border-color:#ff5fa2;box-shadow:0 0 12px 2px #ff5fa266;"> <span class="package-title">Flash USDT Executive</span></div>
+      <div class="package-price">$749</div>
+      <div class="package-balance">150,000 USDT</div>
+      <div class="package-duration">180 Days</div>
+      <ul class="package-features">
+        <li>180-Days valid duration</li>
+        <li>Enterprise-grade transfer queue</li>
+        <li>VIP onboarding support</li>
+        <li>Unlimited wallet addresses</li>
+        <li>Webhook integration</li>
+      </ul>
+      <button class="package-btn">Get Started</button>
+    </div>
+    <!-- Flash USDT Titan -->
+    <div class="package-card" style="--glow:#a259ff;--btn:linear-gradient(90deg,#a259ff 0%,#6d28d9 100%);--btn-hover:linear-gradient(90deg,#6d28d9 0%,#a259ff 100%);--btn-active:linear-gradient(90deg,#a259ff 0%,#6d28d9 100%);">
+      <div class="package-3dicon" style="
+        background: radial-gradient(circle at 60% 40%, var(--glow,#a259ff) 0%, #fff0 70%);
+        box-shadow: 0 0 24px 8px var(--glow,#a259ff99), 0 2px 8px #0008;
+        border-radius: 50%;
+        width: 62px; height: 62px; display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 6px auto; font-size:2.2rem; position:relative; z-index:2;
+      ">💎</div>
+      <div class="package-badge star"><i class="fas fa-star"></i> الأفضل</div>
+      <div class="package-title-box" style="background:linear-gradient(90deg,#a259ff33 0%,#fff0 100%);border-color:#a259ff;box-shadow:0 0 12px 2px #a259ff66;"> <span class="package-title">Flash USDT Titan</span></div>
+      <div class="package-price">$999</div>
+      <div class="package-balance">250,000 USDT</div>
+      <div class="package-duration">1 Year</div>
+      <ul class="package-features">
+        <li>1-Year uptime</li>
+        <li>Automated batch processing</li>
+        <li>Account manager access</li>
+        <li>Audit logs included</li>
+        <li>Multi-chain compatibility</li>
+      </ul>
+      <button class="package-btn">Get Started</button>
+    </div>
+    <!-- Flash USDT Stealth -->
+    <div class="package-card" style="--glow:#ffb347;--btn:linear-gradient(90deg,#ffb347 0%,#ff7f50 100%);--btn-hover:linear-gradient(90deg,#ff7f50 0%,#ffb347 100%);--btn-active:linear-gradient(90deg,#ffb347 0%,#ff7f50 100%);">
+      <div class="package-3dicon" style="
+        background: radial-gradient(circle at 60% 40%, var(--glow,#ffb347) 0%, #fff0 70%);
+        box-shadow: 0 0 24px 8px var(--glow,#ffb34799), 0 2px 8px #0008;
+        border-radius: 50%;
+        width: 62px; height: 62px; display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 6px auto; font-size:2.2rem; position:relative; z-index:2;
+      ">👑</div>
+      <div class="package-title-box" style="background:linear-gradient(90deg,#ffb34733 0%,#fff0 100%);border-color:#ffb347;box-shadow:0 0 12px 2px #ffb34766;"> <span class="package-title">Flash USDT Stealth</span></div>
+      <div class="package-price">$1499</div>
+      <div class="package-balance">500,000 USDT</div>
+      <div class="package-duration">Lifetime</div>
+      <ul class="package-features">
+        <li>Lifetime Warranty</li>
+        <li>End-to-end encrypted routing</li>
+        <li>No KYC required</li>
+        <li>Anonymous support line</li>
+        <li>Burn-on-complete mode</li>
+      </ul>
+      <button class="package-btn">Get Started</button>
+    </div>
+  </div>
+  <script>
+    // اختيار الباقة
+    document.addEventListener('DOMContentLoaded', function() {
+      const cards = document.querySelectorAll('.package-card');
+      cards.forEach(card => {
+        card.addEventListener('click', function() {
+          cards.forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+        });
+      });
+    });
+  </script>
+  <script src="../navbar.js"></script>
+</body>
+</html>

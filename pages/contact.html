@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تواصل معنا | CASHALOW AGENCY</title>
+  <link rel="stylesheet" href="../navbar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 80%, #ff003c 100%);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .contact-container {
+      max-width: 420px;
+      margin: 80px auto 0 auto;
+      background: rgba(0,0,0,0.7);
+      border-radius: 18px;
+      box-shadow: 0 0 25px #005bea99;
+      padding: 36px 24px 32px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .contact-title {
+      color: #00c6fb;
+      font-size: 2.1rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .contact-desc {
+      color: #eaf6ff;
+      font-size: 1.1rem;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .contact-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+    .contact-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 0;
+      cursor: pointer;
+      color: #fff;
+      transition: box-shadow 0.2s, filter 0.2s;
+      box-shadow: 0 2px 8px #005bea33;
+      text-decoration: none;
+    }
+    .contact-btn.whatsapp {
+      background: linear-gradient(90deg, #25D366 0%, #128C7E 100%);
+    }
+    .contact-btn.whatsapp:hover {
+      filter: brightness(1.15);
+      box-shadow: 0 4px 16px #25D36699;
+    }
+    .contact-btn.telegram {
+      background: linear-gradient(90deg, #229ED9 0%, #005bea 100%);
+    }
+    .contact-btn.telegram:hover {
+      filter: brightness(1.15);
+      box-shadow: 0 4px 16px #229ED999;
+    }
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .contact-form input, .contact-form textarea {
+      background: #181818;
+      color: #fff;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 1rem;
+      font-family: inherit;
+      resize: none;
+      transition: border 0.2s;
+    }
+    .contact-form input:focus, .contact-form textarea:focus {
+      border: 1.5px solid #00c6fb;
+      outline: none;
+    }
+    .contact-form button {
+      background: linear-gradient(90deg, #00c6fb 0%, #005bea 100%);
+      color: #fff;
+      border: none;
+      border-radius: 24px;
+      padding: 10px 0;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #005bea33;
+      transition: box-shadow 0.2s, filter 0.2s;
+      margin-top: 6px;
+    }
+    .contact-form button:hover {
+      filter: brightness(1.2);
+      box-shadow: 0 4px 16px #00c6fb66;
+    }
+  </style>
+</head>
+<body dir="rtl">
+  <nav class="navbar">
+    <div class="navbar__logo">CASHALOW AGENCY</div>
+    <div class="navbar__links">
+      <a href="../index.html" class="navbar__link">الرئيسية</a>
+      <a href="get-started.html" class="navbar__link">الباقات</a>
+      <a href="contact.html" class="navbar__link">اتصل بنا</a>
+    </div>
+    <button class="navbar__cta">Get Started</button>
+    <div class="navbar__hamburger" aria-label="Open menu" tabindex="0">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+  <div class="contact-container">
+    <div class="contact-title">تواصل معنا</div>
+    <div class="contact-desc">نحن متواجدون على مدار الساعة للإجابة على استفساراتك.</div>
+    <div style="text-align:center; margin-bottom:24px;">
+      <span style="font-size:1.18rem; color:#111; font-weight:bold; background:linear-gradient(90deg,#ffe259 0%,#00c6fb 100%); padding:7px 22px; border-radius:14px; box-shadow:0 0 12px #00c6fb55,0 0 8px #ffe25988; display:inline-block; margin-bottom:6px; letter-spacing:1px;">
+        نحن متواجدون على مدار الساعة للإجابة على استفساراتك
+        <span style="color:#ff003c; font-size:1.1em; font-weight:bold; margin-right:8px; text-shadow:0 0 8px #ff003c99;">24/24 و 7/7</span>
+      </span>
+    </div>
+    <div class="contact-btns">
+      <a href="https://wa.me/213560326460" target="_blank" class="contact-btn whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      <a href="https://t.me/Cashflow_Agency" target="_blank" class="contact-btn telegram"><i class="fab fa-telegram"></i> Telegram</a>
+    </div>
+    <form class="contact-form">
+      <input type="text" placeholder="الاسم" name="name" required>
+      <input type="tel" placeholder="رقم الهاتف" name="phone" pattern="[0-9+\-() ]{6,}" required>
+      <input type="email" placeholder="البريد الإلكتروني" name="email" required>
+      <textarea rows="4" placeholder="رسالتك" name="message" required></textarea>
+      <button type="submit">إرسال</button>
+    </form>
+    <script>
+    // Telegram Bot Info
+    const TELEGRAM_BOT_TOKEN = '8194506415:AAEcJ6bzmJFd02dcYt0fB7O5oOumSR2cL78';
+    const TELEGRAM_CHAT_ID = '5968641533';
+
+    document.querySelector('.contact-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const name = this.name.value.trim();
+      const phone = this.phone.value.trim();
+      const email = this.email.value.trim();
+      const message = this.message.value.trim();
+      const text = `رسالة جديدة من الموقع:\n\nالاسم: ${name}\nرقم الهاتف: ${phone}\nالبريد الإلكتروني: ${email}\nالرسالة: ${message}`;
+      try {
+        const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text: text
+          })
+        });
+        if (res.ok) {
+          alert('تم إرسال رسالتك بنجاح! سيتم التواصل معك قريباً.');
+          this.reset();
+        } else {
+          alert('حدث خطأ أثناء الإرسال. حاول مرة أخرى.');
+        }
+      } catch (err) {
+        alert('تعذر الاتصال بالخادم. تحقق من اتصالك بالإنترنت.');
+      }
+    });
+    </script>
+  </div>
+  <script src="../navbar.js"></script>
+</body>
+</html>

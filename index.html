@@ -1,258 +1,11 @@
-<script>
-const OPENAI_API_KEY = "YOUR_API_KEY";
-</script>
-<script>
-// كود الدردشة: إرسال الرسالة إلى السيرفر واستقبال الردود
-const chatInput = document.getElementById('ai-bot-input');
-const chatSend = document.getElementById('ai-bot-send');
-const chatMessages = document.querySelector('.ai-bot-messages');
-const userId = '_' + Math.random().toString(36).substr(2, 9);
-const ws = new WebSocket('wss://cashalow-agency.onrender.com');
-ws.onopen = () => ws.send(JSON.stringify({ userId }));
-ws.onmessage = (event) => {
-  try {
-    const data = JSON.parse(event.data);
-    if (data.userId === userId || !data.userId) {
-      const msgDiv = document.createElement('div');
-      msgDiv.className = 'ai-bot-msg ai-bot-msg-bot';
-      msgDiv.innerText = data.text;
-      chatMessages.appendChild(msgDiv);
-      chatMessages.scrollTop = 99999;
-    }
-  } catch {}
-};
-function sendChatMessage() {
-  const text = chatInput.value.trim();
-  if (!text) return;
-  // أضف رسالة المستخدم في الواجهة
-  const msgDiv = document.createElement('div');
-  msgDiv.className = 'ai-bot-msg ai-bot-msg-user';
-  msgDiv.innerText = text;
-  chatMessages.appendChild(msgDiv);
-  chatMessages.scrollTop = 99999;
-  // أرسل الرسالة إلى السيرفر
-  fetch('https://cashalow-agency.onrender.com/api/send', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ userId, message: text })
-  });
-  chatInput.value = '';
-}
-chatSend.onclick = sendChatMessage;
-chatInput.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    sendChatMessage();
-  }
-});
-</script>
-</style>
-<!-- بوت روبوت أزرق متوهج في الزاوية اليسرى السفلى -->
-<div id="ai-bot-widget">
-  <div id="ai-bot-icon" title="مرحبًا! هل تحتاج للمساعدة؟">
-    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-      <ellipse cx="30" cy="38" rx="18" ry="15" fill="#0ff" filter="url(#glow)"/>
-      <ellipse cx="30" cy="38" rx="18" ry="15" fill="#0ff" fill-opacity="0.3"/>
-      <ellipse cx="30" cy="28" rx="20" ry="18" fill="#0cf" stroke="#0ff" stroke-width="2"/>
-      <ellipse cx="22" cy="28" rx="3.5" ry="5" fill="#fff"/>
-      <ellipse cx="38" cy="28" rx="3.5" ry="5" fill="#fff"/>
-      <ellipse cx="22" cy="28" rx="1.5" ry="2" fill="#0ff"/>
-      <ellipse cx="38" cy="28" rx="1.5" ry="2" fill="#0ff"/>
-      <rect x="25" y="44" width="10" height="4" rx="2" fill="#0ff" fill-opacity="0.7"/>
-      <defs>
-        <filter id="glow" x="0" y="10" width="60" height="50" filterUnits="userSpaceOnUse">
-          <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
-          <feMerge>
-            <feMergeNode in="coloredBlur"/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-      </defs>
-    </svg>
-  </div>
-  <div id="ai-bot-chat" style="display:none">
-    <div class="ai-bot-header">
-      <span>🤖 مساعد كاش فلو</span>
-      <button id="ai-bot-menu" title="خيارات"><i class="fa fa-ellipsis-v"></i></button>
-      <button id="ai-bot-close">×</button>
-      <div id="ai-bot-menu-popup" style="display:none;position:absolute;top:48px;left:16px;z-index:10;background:#fff;color:#0cf;padding:14px 18px;border-radius:12px;box-shadow:0 4px 24px #0cf4;min-width:220px;font-size:1rem;">
-        <b>تواصل معنا عبر تلغرام:</b><br>
-        <a href="https://t.me/Cashflow_Agency" target="_blank" style="color:#0cf;text-decoration:underline;">@Cashflow_Agency</a>
-        <br><br>
-        <span style="color:#888;font-size:0.95em;">يمكنك إرسال استفسارك مباشرة عبر تلغرام</span>
-      </div>
-    </div>
-    <div class="ai-bot-messages">
-      <div class="ai-bot-msg ai-bot-msg-bot">
-        <span>👋 أهلًا بك في كاش فلو أجينسي! كيف يمكنني مساعدتك؟ أنا مختص في توجيهك حتى لا يتم نصب عليك</span>
-      </div>
-    </div>
-    <div class="ai-bot-input-row">
-      <input type="text" id="ai-bot-input" placeholder="اكتب رسالتك..." autocomplete="off" />
-      <button id="ai-bot-mic" title="إرسال صوتي" style="margin-left:6px;"><i class="fa fa-microphone"></i></button>
-      <button id="ai-bot-send"><i class="fa fa-paper-plane"></i></button>
-    </div>
-  </div>
-</div>
-<style>
-/* بوت روبوت أزرق متوهج */
-#ai-bot-widget {
-  position: fixed;
-  left: 24px;
-  bottom: 24px;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-#ai-bot-icon {
-  background: none;
-  border: none;
-  cursor: pointer;
-  border-radius: 50%;
-  box-shadow: 0 0 18px 4px #0ff8, 0 0 0 2px #0cf8;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-#ai-bot-icon:hover {
-  transform: scale(1.08) rotate(-6deg);
-  box-shadow: 0 0 32px 8px #0ff, 0 0 0 3px #0cf;
-}
-#ai-bot-icon svg { display: block; }
-
-/* تكبير نافذة الدردشة مثل Tawk.to */
-#ai-bot-chat {
-  width: 400px;
-  height: 600px;
-  max-width: 98vw;
-  max-height: 90vh;
-  background: linear-gradient(135deg, #0a1a2f 80%, #0ff 100%);
-  border-radius: 18px 18px 12px 12px;
-  box-shadow: 0 8px 32px #0cf8, 0 0 0 2px #0ff8;
-  margin-top: 12px;
-  overflow: hidden;
-  animation: ai-bot-fadein 0.3s;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-.ai-bot-header {
-  position: relative;
-}
-@keyframes ai-bot-fadein {
-  from { opacity: 0; transform: translateY(40px) scale(0.9); }
-  to { opacity: 1; transform: none; }
-}
-.ai-bot-header {
-  background: #0cf;
-  color: #fff;
-  font-weight: bold;
-  font-size: 1.1rem;
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.ai-bot-header button {
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-.ai-bot-header button:hover { color: #0ff; }
-.ai-bot-messages {
-  flex: 1;
-  background: rgba(10,30,60,0.13);
-  padding: 16px 12px 8px 12px;
-  overflow-y: auto;
-  max-height: 320px;
-  min-height: 80px;
-}
-.ai-bot-msg {
-  margin-bottom: 10px;
-  display: flex;
-  align-items: flex-end;
-}
-.ai-bot-msg-bot {
-  background: linear-gradient(90deg, #0cf 60%, #0ff 100%);
-  color: #fff;
-  border-radius: 12px 12px 12px 4px;
-  padding: 8px 14px;
-  font-size: 1rem;
-  box-shadow: 0 2px 8px #0cf4;
-  align-self: flex-start;
-}
-.ai-bot-msg-user {
-  background: #fff;
-  color: #0cf;
-  border-radius: 12px 12px 4px 12px;
-  padding: 8px 14px;
-  font-size: 1rem;
-  box-shadow: 0 2px 8px #0cf2;
-  align-self: flex-end;
-}
-.ai-bot-input-row {
-  display: flex;
-  align-items: center;
-  padding: 10px 10px 10px 10px;
-  background: #0cf2;
-  border-top: 1px solid #0ff4;
-}
-#ai-bot-input {
-  flex: 1;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 1rem;
-  margin-right: 8px;
-  outline: none;
-}
-#ai-bot-send {
-  background: #0ff;
-  color: #0a1a2f;
-  border: none;
-  border-radius: 50%;
-  width: 38px;
-  height: 38px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  box-shadow: 0 0 8px #0ff8;
-  transition: background 0.2s;
-}
-#ai-bot-send:hover { background: #0cf; color: #fff; }
-</style>
-<script>
-// بوت روبوت: إظهار/إخفاء الدردشة
-const aiBotIcon = document.getElementById('ai-bot-icon');
-const aiBotChat = document.getElementById('ai-bot-chat');
-const aiBotClose = document.getElementById('ai-bot-close');
-const aiBotMenu = document.getElementById('ai-bot-menu');
-const aiBotMenuPopup = document.getElementById('ai-bot-menu-popup');
-const aiBotMic = document.getElementById('ai-bot-mic');
-
-aiBotIcon.onclick = () => { aiBotChat.style.display = 'flex'; };
-aiBotClose.onclick = () => { aiBotChat.style.display = 'none'; };
-// تلميح عند المرور
-aiBotIcon.onmouseenter = function() {
-  aiBotIcon.setAttribute('title', 'مرحبًا! هل تحتاج للمساعدة؟');
-};
-// زر ثلاث نقاط
-aiBotMenu.onclick = function(e) {
-  e.stopPropagation();
-  aiBotMenuPopup.style.display = aiBotMenuPopup.style.display === 'block' ? 'none' : 'block';
-};
-document.addEventListener('click', function(e){
-  if (aiBotMenuPopup && !aiBotMenu.contains(e.target)) aiBotMenuPopup.style.display = 'none';
-});
-// زر مايكروفون (أيقونة فقط حالياً)
-aiBotMic.onclick = function() {
-  alert('ميزة إرسال رسالة صوتية ستتوفر قريباً!');
-};
-</script>
 <!DOCTYPE html>
 <html lang="ar">
 <head>
+  <!-- Telegram Bot Token and Chat ID for contact integration -->
+  <script>
+    const TELEGRAM_BOT_TOKEN = '8194506415:AAEcJ6bzmJFd02dcYt0fB7O5oOumSR2cL78';
+    const TELEGRAM_CHAT_ID = '5968641533';
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cashflow Agency</title>
@@ -513,9 +266,12 @@ aiBotMic.onclick = function() {
     }
     .close-contact {
       position: absolute;
-      top: 10px; right: 18px;
+      top: 18px; /* زيادة المسافة من الأعلى */
+      right: 18px;
+      z-index: 1201;
       background: none; border: none; color: #fff;
       font-size: 1.5rem; cursor: pointer;
+      margin-top: 12px;
     }
     main {
       margin: 40px auto 0 auto;
@@ -645,7 +401,7 @@ aiBotMic.onclick = function() {
 footer {
   margin-top: 60px;
   padding: 32px 0 12px 0;
-  background: #111;
+  background: transparent;
   text-align: center;
   box-shadow: 0 0 24px #ff003c88;
   position: relative; /* Ensure not fixed */
@@ -812,6 +568,25 @@ footer {
   </style>
 </head>
 <body dir="rtl">
+  <!-- Navbar Start -->
+  <nav class="navbar">
+    <div class="navbar__logo">CASHALOW AGENCY</div>
+    <div class="navbar__links" style="margin: 0 auto;">
+      <a href="#" class="navbar__link">Pricing</a>
+      <a href="#" class="navbar__link">License Activation</a>
+      <a href="buy-coins.html" class="navbar__link">Buy Coins</a>
+      <a href="pages/contact.html" class="navbar__link contact">Contact Us</a>
+      <a href="pages/get-started.html" class="navbar__cta" style="padding:7px 18px; font-size:1rem; min-width:unset;">Get Started</a>
+    </div>
+    <div class="navbar__hamburger" aria-label="Open menu" tabindex="0">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+  <!-- Navbar End -->
+  <link rel="stylesheet" href="navbar.css">
+  <script src="navbar.js"></script>
   <div class="animated-bg"></div>
   <header>
     <div class="header-btns">
@@ -1048,12 +823,14 @@ footer {
       <a class="footer-icon" href="https://t.me/Cashflow_Agency" target="_blank" title="تلغرام">
         <i class="fab fa-telegram-plane"></i>
       </a>
+      
       <a class="footer-icon" href="https://www.tiktok.com/@sb_model1" target="_blank" title="تيك توك">
         <i class="fab fa-tiktok"></i>
       </a>
       <a class="footer-icon" href="https://wa.me/560326460" target="_blank" title="واتساب">
         <i class="fab fa-whatsapp"></i>
       </a>
+
       <a class="footer-icon" href="https://wa.me/213560326460" target="_blank" title="هاتف">
         <i class="fas fa-phone"></i>
       </a>
@@ -1194,7 +971,7 @@ footer {
     .stat-text { font-size: 1.1rem; }
   }
 </style>
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  
   <script>
     // ...existing code...
     // Language dropdown
@@ -1412,86 +1189,68 @@ footer {
     const fixedEmailBtn = document.getElementById('fixedEmailBtn');
     const contactPopup = document.getElementById('contactPopup');
     const closeContactPopup = document.getElementById('closeContactPopup');
-    fixedEmailBtn.onclick = function() {
-      contactPopup.classList.add('show');
-    };
-    closeContactPopup.onclick = function() {
-      contactPopup.classList.remove('show');
-    };
-    // إغلاق النافذة عند الضغط خارجها
-    contactPopup.onclick = function(e) {
-      if (e.target === contactPopup) contactPopup.classList.remove('show');
-    };
+    if (fixedEmailBtn && contactPopup && closeContactPopup) {
+      fixedEmailBtn.onclick = function() {
+        contactPopup.classList.add('show');
+      };
+      closeContactPopup.onclick = function() {
+        contactPopup.classList.remove('show');
+      };
+      // إغلاق النافذة عند الضغط خارجها
+      contactPopup.onclick = function(e) {
+        if (e.target === contactPopup) contactPopup.classList.remove('show');
+      };
+    } else {
+      console.warn('زر الإيميل أو نافذة التواصل غير موجودة في الصفحة!');
+    }
     // EmailJS إعداد النموذج وإرسال الرسالة
-    (function(){
-      emailjs.init('YOUR_PUBLIC_KEY'); // ضع هنا Public Key من EmailJS
-    })();
-    document.getElementById('contactForm').onsubmit = async function(e) {
+    document.getElementById('contactForm').onsubmit = function(e) {
       e.preventDefault();
       var status = document.getElementById('contactStatus');
       status.textContent = 'جاري الإرسال...';
-      status.style.color = '#fff';
-
-      // جلب القيم من الحقول
-      const name = this.full_name.value.trim();
-      const email = this.user_email.value.trim();
-      const phone = this.user_phone.value.trim();
-      const messageText = this.message.value.trim();
-
-      // تحقق من الحقول
-      if (!name || !email || !phone || !messageText) {
-        status.textContent = '❌ يرجى تعبئة جميع الحقول بشكل صحيح.';
+      // Telegram Bot Info
+      const TELEGRAM_BOT_TOKEN = '8194506415:AAEcJ6bzmJFd02dcYt0fB7O5oOumSR2cL78';
+      const TELEGRAM_CHAT_ID = '5968641533';
+      // Get form data
+      const form = this;
+      const name = form.full_name.value.trim();
+      const email = form.user_email.value.trim();
+      const phone = form.user_phone.value.trim();
+      const message = form.message.value.trim();
+      const text = `رسالة جديدة من الموقع:\n\nالاسم: ${name}\nالبريد الإلكتروني: ${email}\nرقم الهاتف: ${phone}\nالرسالة: ${message}`;
+      fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: text
+        })
+      })
+      .then(res => {
+        if (res.ok) {
+          status.textContent = '✅ تم الإرسال بنجاح! سيتم الرد عليك قريبًا.';
+          status.style.color = '#27ff5a';
+          form.reset();
+          setTimeout(function(){
+            contactPopup.classList.remove('show');
+            status.textContent = '';
+          }, 1200);
+        } else {
+          status.textContent = '❌ حدث خطأ أثناء الإرسال. يرجى المحاولة لاحقًا.';
+          status.style.color = '#ff003c';
+        }
+      })
+      .catch(() => {
+        status.textContent = '❌ تعذر الاتصال بالخادم. تحقق من اتصالك بالإنترنت.';
         status.style.color = '#ff003c';
-        return;
-      }
-
-      // إعداد رسالة تيليجرام
-      const token = '8194506415:AAEcJ6bzmJFd02dcYt0fB7O5oOumSR2cL78';
-      const chat_id = '5968641533';
-      const tgMessage = `\n📥 رسالة جديدة من الموقع:\n\n👤 الاسم: ${name}\n📧 الإيميل: ${email}\n📱 الهاتف: ${phone}\n📝 الرسالة: ${messageText}\n`;
-
-      let telegramOk = false;
-      try {
-        const tgRes = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ chat_id, text: tgMessage }),
-        });
-        telegramOk = tgRes.ok;
-      } catch (err) {
-        telegramOk = false;
-      }
-
-      // محاولة إرسال نسخة إلى البريد (اختياري)
-      let emailOk = false;
-      try {
-        await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
-          to_email: 'cashflowagency.n1@gmail.com',
-          from_name: name,
-          user_email: email,
-          user_phone: phone,
-          message: messageText,
-          formatted_message: tgMessage
-        });
-        emailOk = true;
-      } catch (err) {
-        emailOk = false;
-      }
-
-      if (telegramOk) {
-        status.textContent = '✅ تم إرسال الرسالة بنجاح!';
-        status.style.color = '#27ff5a';
-        document.getElementById('contactForm').reset();
-        setTimeout(function(){
-          contactPopup.classList.remove('show');
-          status.textContent = '';
-        }, 1500);
-      } else {
-        status.textContent = '❌ حدث خطأ أثناء الإرسال. يرجى إعادة المحاولة.';
-        status.style.color = '#ff003c';
-      }
+      });
     };
   </script>
-</body>
+  <!-- قسم الباقات (Get Started Section) -->
+  <section id="get-started-section" style="padding:80px 0 40px 0; background:rgba(0,0,0,0.15); text-align:center;">
+    <!-- يمكن إضافة تفاصيل الباقات هنا -->
+  </section>
+
+  </body>
 </html>
 

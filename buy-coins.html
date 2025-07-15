@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buy Coins | CASHALOW AGENCY</title>
+  <link rel="stylesheet" href="navbar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 60%, #0b1623 100%, #1a1a2e 120%);
+      min-height: 100vh;
+      color: #fff;
+      overflow-x: hidden;
+      position: relative;
+    }
+    .animated-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: -1;
+      background: radial-gradient(circle at 20% 30%, #9f4df555 0%, transparent 60%),
+                  radial-gradient(circle at 80% 70%, #00eaff33 0%, transparent 60%);
+      animation: bgmove 10s linear infinite alternate;
+      opacity: 0.7;
+    }
+    @keyframes bgmove {
+      0% { background-position: 0 0, 100vw 100vh; }
+      100% { background-position: 100vw 100vh, 0 0; }
+    }
+    .main-title {
+      text-align: center;
+      font-size: 2.4rem;
+      font-weight: bold;
+      color: #00eaff;
+      margin: 70px 0 38px 0;
+      letter-spacing: 1.5px;
+      text-shadow: 0 0 18px #00eaff99, 0 0 8px #fff;
+      user-select: none;
+    }
+    .coin-cards {
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+      align-items: stretch;
+      flex-wrap: wrap;
+      max-width: 1100px;
+      margin: 0 auto 40px auto;
+      padding: 0 10px;
+    }
+    .coin-card {
+      background: linear-gradient(135deg, #ff477e 0%, #9f4df5 100%);
+      color: #fff;
+      border-radius: 22px;
+      box-shadow: 0 0 32px #9f4df555, 0 0 12px #ff477e44;
+      padding: 36px 28px 28px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 290px;
+      max-width: 340px;
+      flex: 1 1 300px;
+      position: relative;
+      margin-bottom: 18px;
+      transition: box-shadow 0.3s, transform 0.3s, background 0.3s;
+      cursor: pointer;
+    }
+    .coin-card.btc {
+      background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%);
+      box-shadow: 0 0 32px #ff980055, 0 0 12px #ff572244;
+    }
+    .coin-card.trx {
+      background: linear-gradient(135deg, #ec407a 0%, #d81b60 100%);
+      box-shadow: 0 0 32px #d81b6055, 0 0 12px #ec407a44;
+    }
+    .coin-card:hover {
+      box-shadow: 0 0 48px #fff, 0 0 32px #00eaff, 0 0 24px #9f4df5;
+      transform: scale(1.04) translateY(-6px);
+      z-index: 2;
+    }
+    .coin-icon {
+      width: 70px; height: 70px;
+      background: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 18px #fff8, 0 2px 8px #0005;
+      margin-bottom: 18px;
+      font-size: 2.5rem;
+      transition: transform 0.22s;
+    }
+    .coin-card:hover .coin-icon {
+      transform: scale(1.13) rotate(-8deg);
+    }
+    .coin-icon.usdt { color: #26a17b; }
+    .coin-icon.btc { color: #ff9800; }
+    .coin-icon.trx { color: #d81b60; }
+    .coin-name {
+      font-size: 1.45rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+    .coin-price {
+      font-size: 1.18rem;
+      color: #fff;
+      font-weight: bold;
+      margin-bottom: 6px;
+      text-shadow: 0 0 8px #fff8;
+    }
+    .coin-desc {
+      font-size: 1.05rem;
+      color: #eaf6ff;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .coin-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 18px 0;
+      width: 100%;
+    }
+    .coin-features li {
+      margin-bottom: 6px;
+      font-size: 1.01rem;
+      position: relative;
+      padding-right: 22px;
+      text-align: right;
+      font-weight: 500;
+    }
+    .coin-features li:before {
+      content: '✔️';
+      position: absolute;
+      right: 0;
+      font-size: 1.1rem;
+      color: #fff;
+      filter: drop-shadow(0 0 4px #fff8);
+    }
+    .coin-btn {
+      border: none;
+      border-radius: 24px;
+      padding: 10px 28px;
+      font-size: 1.08rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: #fff;
+      margin-top: 8px;
+      box-shadow: 0 2px 12px #ff4fb455;
+      background: linear-gradient(90deg,#ff4fb4 0%,#ff477e 100%);
+      transition: box-shadow 0.2s, filter 0.2s, background 0.2s;
+      text-shadow: 0 1px 8px #000a;
+    }
+    .coin-card.btc .coin-btn {
+      background: linear-gradient(90deg,#ff7043 0%,#ff9800 100%);
+      box-shadow: 0 2px 12px #ff704355;
+    }
+    .coin-card.trx .coin-btn {
+      background: linear-gradient(90deg,#f06292 0%,#d81b60 100%);
+      box-shadow: 0 2px 12px #f0629255;
+    }
+    .coin-btn:hover {
+      filter: brightness(1.18) drop-shadow(0 0 12px #fff8);
+      box-shadow: 0 4px 24px #fff8;
+      background: linear-gradient(90deg,#fff 0%,#ff4fb4 100%);
+      color: #ff477e;
+    }
+    .coin-card.btc .coin-btn:hover {
+      background: linear-gradient(90deg,#fff 0%,#ff7043 100%);
+      color: #ff5722;
+    }
+    .coin-card.trx .coin-btn:hover {
+      background: linear-gradient(90deg,#fff 0%,#f06292 100%);
+      color: #d81b60;
+    }
+    @media (max-width: 900px) {
+      .coin-cards { flex-direction: column; align-items: center; gap: 24px; }
+      .coin-card { min-width: 90vw; max-width: 98vw; }
+    }
+  </style>
+</head>
+<body dir="rtl">
+  <div class="animated-bg"></div>
+  <nav class="navbar">
+    <div class="navbar__logo">CASHALOW AGENCY</div>
+    <div class="navbar__links">
+      <a href="index.html" class="navbar__link">الرئيسية</a>
+      <a href="pages/get-started.html" class="navbar__link">الباقات</a>
+      <a href="buy-coins.html" class="navbar__link">Buy Coins</a>
+    </div>
+    <a href="pages/get-started.html" class="navbar__cta">Get Started</a>
+    <div class="navbar__hamburger" aria-label="Open menu" tabindex="0">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+  </nav>
+  <div style="height:80px;"></div>
+  <div class="main-title">اختر العملة التي تريد شراءها</div>
+  <div class="main-title">اختر العملة التي تريد شراءها</div>
+  <div class="coin-cards">
+    <!-- USDT Card -->
+    <div class="coin-card" onclick="window.location.href='flash-transfer.html'">
+      <div class="coin-icon usdt"><i class="fab fa-usdt"></i></div>
+      <div class="coin-name">USDT (Tether)</div>
+      <div class="coin-price">$1.00</div>
+      <div class="coin-desc">Stablecoin سريع وذو قيمة ثابتة.</div>
+      <ul class="coin-features">
+        <li>Stable value</li>
+        <li>High liquidity</li>
+        <li>Instant transfers</li>
+      </ul>
+      <button class="coin-btn">Flash Transfer</button>
+    </div>
+    <!-- BTC Card -->
+    <div class="coin-card btc" onclick="window.location.href='flash-transfer.html'">
+      <div class="coin-icon btc"><i class="fab fa-btc"></i></div>
+      <div class="coin-name">Bitcoin (BTC)</div>
+      <div class="coin-price">$43,250</div>
+      <div class="coin-desc">أهم وأقوى عملة مشفرة في السوق.</div>
+      <ul class="coin-features">
+        <li>Store of value</li>
+        <li>Decentralized</li>
+        <li>Limited supply</li>
+      </ul>
+      <button class="coin-btn">Flash Transfer</button>
+    </div>
+    <!-- TRX Card -->
+    <div class="coin-card trx" onclick="window.location.href='flash-transfer.html'">
+      <div class="coin-icon trx"><i class="fab fa-trx"></i></div>
+      <div class="coin-name">TRON (TRX)</div>
+      <div class="coin-price">$0.09</div>
+      <div class="coin-desc">شبكة TRON تدعم السرعة واللامركزية.</div>
+      <button class="coin-btn">Flash Transfer</button>
+      <ul class="coin-features">
+        <li>Fast transactions</li>
+        <li>Low fees</li>
+        <li>Scalable dApps</li>
+      </ul>
+      <button class="coin-btn">Flash Transfer</button>
+    </div>
+  </div>
+  <script src="navbar.js"></script>
+
+</body>
+</html>
