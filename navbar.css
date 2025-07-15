@@ -1,3 +1,51 @@
+/* Important Note Glow Section */
+.important-note-glow {
+  background: rgba(30,0,0,0.85);
+  border-radius: 1.5rem;
+  box-shadow: 0 0 24px 0 #ff1744, 0 0 0 2px #ff1744cc;
+  border: 2px solid #ff1744;
+  padding: 1.2rem 1.5rem 1.1rem 1.5rem;
+  margin: 2.5rem auto 1.5rem auto;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  position: relative;
+  z-index: 2;
+}
+.important-note-title {
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, #ff1744 70%, #a30021 100%);
+  border-radius: 1.2rem;
+  padding: 0.5rem 2.2rem;
+  box-shadow: 0 0 16px 0 #ff1744, 0 0 0 2px #a30021;
+  text-align: center;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 6px #a30021;
+  border: 1.5px solid #fff2;
+  margin-bottom: 0.2rem;
+  animation: importantGlow 1.2s infinite alternate;
+}
+.important-note-desc {
+  color: #fff;
+  font-size: 1.08rem;
+  background: rgba(40,0,0,0.55);
+  border-radius: 1.2rem;
+  padding: 0.7rem 1.5rem;
+  border: 1.5px solid #ff1744;
+  box-shadow: 0 0 8px 0 #ff1744;
+  text-align: center;
+  margin-bottom: 0.2rem;
+  line-height: 1.7;
+  max-width: 100%;
+}
+@keyframes importantGlow {
+  from { box-shadow: 0 0 16px 0 #ff1744, 0 0 0 2px #a30021; }
+  to { box-shadow: 0 0 32px 0 #ff1744, 0 0 0 2px #fff; }
+}
 /* Navbar Styles */
 .navbar {
 position: sticky;
