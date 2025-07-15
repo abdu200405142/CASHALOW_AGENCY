@@ -58,6 +58,24 @@
       max-width: 1200px;
       position: relative;
     }
+    @media (max-width: 900px) {
+      .packages {
+        grid-template-columns: 1fr 1fr;
+        gap: 24px 16px;
+      }
+    }
+    @media (max-width: 700px) {
+      .packages {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding: 0 4vw;
+      }
+      .package-card {
+        max-width: 98vw;
+        min-width: 90vw;
+        margin: 0 auto;
+      }
+    }
     .package-row-separator {
       grid-column: 1 / -1;
       height: 2px;
