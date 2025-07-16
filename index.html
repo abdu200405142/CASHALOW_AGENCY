@@ -299,6 +299,9 @@
       position: relative;
       min-height: 340px;
       cursor: pointer;
+      margin-bottom: 2.2rem;
+      margin-left: 1.2rem;
+      margin-right: 1.2rem;
     }
     .package-card:hover {
       transform: scale(1.04);
@@ -1075,9 +1078,9 @@ footer {
     display: inline-block;
     background: linear-gradient(90deg, #27ff5a 70%, #00c853 100%);
     color: #111;
-    font-size: 1.08rem;
+    font-size: 1.32rem;
     font-weight: bold;
-    padding: 0.7rem 2.2rem;
+    padding: 1.1rem 3.2rem;
     border: none;
     border-radius: 1.2rem;
     box-shadow: 0 0 18px 0 #27ff5a, 0 0 0 2px #00c853;
@@ -1447,18 +1450,33 @@ footer {
     margin-left: 0.2rem;
     margin-right: 0.2rem;
   }
+  .package-card.max, .package-card.top, .package-card.good {
+    background: linear-gradient(135deg, rgba(180,0,40,0.68) 0%, rgba(0,0,0,0.72) 100%);
+    color: #fff;
+    border-radius: 24px;
+    box-shadow: 0 0 32px rgba(0,191,255,0.18), 0 0 24px rgba(46,46,46,0.18), 0 0 20px rgba(0,191,255,0.12), 0 0 8px #fff;
+    padding: 36px 22px;
+    min-width: 260px;
+    max-width: 340px;
+    display: flex; flex-direction: column; align-items: center;
+    transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+    position: relative;
+    min-height: 340px;
+    cursor: pointer;
+    border: none;
+  }
   .package-card:hover {
     transform: scale(1.06);
     box-shadow: 0 0 32px 0 #ff003c, 0 0 0 2px #fff;
     z-index: 2;
   }
   .package-logo {
-    width: 78px;
-    height: 78px;
+    width: 98px;
+    height: 98px;
     object-fit: contain;
     margin-bottom: 0.7rem;
     margin-top: 0.1rem;
-    filter: drop-shadow(0 0 18px #ff1744) drop-shadow(0 0 32px #fff2);
+    filter: drop-shadow(0 0 18px #fff) drop-shadow(0 0 32px #ff1744);
     transition: filter 0.3s;
   }
   .glow-logo {
@@ -1686,6 +1704,228 @@ footer {
     }
   }
 </style>
+  <footer class="site-footer">
+    <div class="trusted-logos">
+      <a href="https://broker-qx.pro/sign-up/?lid=789530" target="_blank" rel="noopener"><img src="assets/bybit.jpg" alt="Bybit" class="partner-logo"></a>
+      <a href="https://broker-qx.pro/sign-up/?lid=789530" target="_blank" rel="noopener"><img src="assets/binance.jpg" alt="Binance" class="partner-logo"></a>
+      <a href="https://broker-qx.pro/sign-up/?lid=789530" target="_blank" rel="noopener"><img src="assets/visa.jpg" alt="Visa Card" class="partner-logo"></a>
+      <a href="https://broker-qx.pro/sign-up/?lid=789530" target="_blank" rel="noopener"><img src="assets/pocketoption.jpg" alt="Pocket Option" class="partner-logo"></a>
+      <a href="https://broker-qx.pro/sign-up/?lid=789530" target="_blank" rel="noopener"><img src="assets/quotex.jpg" alt="Quotex" class="partner-logo"></a>
+      <a href="https://broker-qx.pro/sign-up/?lid=789530" target="_blank" rel="noopener"><img src="assets/paypal.jpg" alt="PayPal" class="partner-logo"></a>
+    </div>
+    <div class="important-box-wrapper">
+      <div class="important-title">هام جدااا</div>
+      <div class="important-box">
+        <div class="flags-row">
+          <img src="https://flagcdn.com/w40/us.png" alt="USA" class="flag-icon">
+          <img src="https://flagcdn.com/w40/gb.png" alt="UK" class="flag-icon">
+          <img src="https://flagcdn.com/w40/eu.png" alt="EU" class="flag-icon">
+          <img src="https://flagcdn.com/w40/ae.png" alt="UAE" class="flag-icon">
+          <img src="https://flagcdn.com/w40/ru.png" alt="Russia" class="flag-icon">
+          <img src="https://flagcdn.com/w40/cn.png" alt="China" class="flag-icon">
+        </div>
+        <span class="important-text">
+          نحن الوكيل المعتمد والأفضل في تقديم خدمات العملات المشفرة عبر الوطن العربي، وأوروبا، وآسيا، وأمريكا، من خلال شراكات رسمية وعقود موثقة مع أشهر المنصات العالمية. التزامنا الشفافية والمهنية يجعلنا خيارك الأمثل للحصول على خدمات رقمية آمنة، موثوقة وسريعة — انضم إلينا الآن ولا تندم، فأنت في أيدٍ خبيرة تضمن لك التميز والثقة.<br><br>
+          معنا، أنت لا تتعامل مع وسيط عادي، بل مع نخبة من خبراء العملات الرقمية المرتبطين بأكبر المنصات العالمية بعقود رسمية. نقدم لك خدمات مشفّرة بمعايير عالية من المصداقية، والسرعة، والأمان في أكثر من 4 قارات. لا تضيع وقتك في التجارب، اختر الوكيل الذي اختاره المحترفون — معنا النجاح مضمون، والثقة تبدأ من أول تعامل
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <style>
+    .packages-container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      gap: 6rem;
+      justify-content: center;
+      align-items: stretch;
+      background: none;
+      box-shadow: none;
+      border: none;
+      overflow-x: visible;
+    }
+    @media (max-width: 1024px) {
+      .packages-container {
+        gap: 3.2rem;
+      }
+    }
+    @media (max-width: 768px) {
+      .packages-container {
+        flex-wrap: wrap;
+        flex-direction: row;
+        gap: 2.2rem;
+        justify-content: center;
+      }
+      .package-card.max, .package-card.top, .package-card.good {
+        min-width: 220px;
+        max-width: 98vw;
+        margin-bottom: 1.2rem;
+      }
+    }
+    @media (max-width: 600px) {
+      .packages-container {
+        flex-wrap: nowrap;
+        flex-direction: row;
+        gap: 1.2rem;
+        overflow-x: auto;
+        justify-content: flex-start;
+        align-items: stretch;
+        scroll-snap-type: x mandatory;
+      }
+      .package-card.max, .package-card.top, .package-card.good {
+        min-width: 80vw;
+        max-width: 90vw;
+        margin-bottom: 0.7rem;
+        scroll-snap-align: center;
+      }
+      .packages-container::-webkit-scrollbar {
+        height: 8px;
+        background: #eee;
+      }
+      .packages-container::-webkit-scrollbar-thumb {
+        background: #ff1744;
+        border-radius: 8px;
+      }
+    }
+    .important-box-wrapper {
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.2rem;
+      margin-top: 1.2rem;
+    }
+    .important-title {
+      font-size: 1.35rem;
+      font-weight: bold;
+      color: #ff1744;
+      text-shadow: 0 0 12px #ff1744, 0 0 24px #fff2;
+      margin-bottom: 0.7rem;
+      letter-spacing: 2px;
+      text-align: center;
+      animation: importantGlow 1.2s infinite alternate;
+    }
+    @keyframes importantGlow {
+      from { text-shadow: 0 0 12px #ff1744, 0 0 24px #fff2; }
+      to { text-shadow: 0 0 24px #ff1744, 0 0 48px #fff5; }
+    }
+    .important-box {
+      background: rgba(33,150,243,0.38);
+      border-radius: 18px;
+      box-shadow: 0 0 18px #2196f399;
+      padding: 1.2rem 2.2rem;
+      max-width: 900px;
+      width: 90vw;
+      margin: 0 auto;
+      border: 2.5px solid #1565c0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .flags-row {
+      display: flex;
+      gap: 0.7rem;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 0.7rem;
+    }
+    .flag-icon {
+      width: 32px;
+      height: 22px;
+      border-radius: 4px;
+      box-shadow: 0 0 6px #1565c0;
+      object-fit: cover;
+    }
+    .important-text {
+      color: #222;
+      font-size: 0.98rem;
+      font-weight: 500;
+      text-align: center;
+      line-height: 1.7;
+      letter-spacing: 1px;
+    }
+    @media (max-width: 700px) {
+      .important-box {
+        padding: 0.7rem 0.5rem;
+        max-width: 98vw;
+      }
+      .important-title {
+        font-size: 1.1rem;
+      }
+      .important-text {
+        font-size: 1rem;
+      }
+    }
+    .site-footer {
+      width: 100vw;
+      background: rgba(0,0,0,0.4);
+      padding: 2.5rem 0 1.5rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2.5rem;
+      border-top: 2px solid #222;
+    }
+    .trusted-logos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.2rem;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 1.2rem;
+      width: 100%;
+      max-width: 900px;
+    }
+    .partner-logo {
+      width: 120px;
+      height: auto;
+      object-fit: contain;
+      background: rgba(0,0,0,0.7);
+      border-radius: 12px;
+      box-shadow: 0 0 12px #0002;
+      padding: 0.5rem 1.2rem;
+      transition: transform 0.2s;
+      filter: brightness(1.05) contrast(1.1);
+      border: none;
+    }
+    .partner-logo:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 24px #00bfff88;
+      border-color: #00bfff;
+    }
+    .trusted-phrase {
+      color: #fff;
+      font-size: 1.18rem;
+      font-weight: 500;
+      text-align: center;
+      margin-top: 0.7rem;
+      margin-bottom: 0.2rem;
+      letter-spacing: 1px;
+      line-height: 1.7;
+      padding: 0 1.2rem;
+    }
+    @media (max-width: 700px) {
+      .trusted-logos {
+        gap: 1.1rem;
+        max-width: 98vw;
+      }
+      .partner-logo {
+        width: 54px;
+        padding: 0.3rem 0.6rem;
+      }
+      .trusted-phrase {
+        font-size: 1rem;
+        padding: 0 0.2rem;
+      }
+      .site-footer {
+        padding: 1.2rem 0 0.7rem 0;
+      }
+    }
+  </style>
 </body>
 </html>
 
