@@ -435,13 +435,12 @@
     </div>
   </div>
   <script>
-    // اختيار الباقة
+    // عند الضغط على أي باقة، يفتح رابط التليجرام
     document.addEventListener('DOMContentLoaded', function() {
       const cards = document.querySelectorAll('.package-card');
       cards.forEach(card => {
-        card.addEventListener('click', function() {
-          cards.forEach(c => c.classList.remove('selected'));
-          card.classList.add('selected');
+        card.addEventListener('click', function(e) {
+          window.open('https://t.me/Abdallah_Cashflow', '_blank');
         });
       });
     });

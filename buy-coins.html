@@ -1,3 +1,16 @@
+<script>
+// عند الضغط على زر Flash Transfer فقط، يفتح رابط التليجرام
+document.addEventListener('DOMContentLoaded', function() {
+  const flashBtns = Array.from(document.querySelectorAll('button.coin-btn')).filter(btn => btn.textContent.trim().toLowerCase() === 'flash transfer');
+  flashBtns.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      window.open('https://t.me/Abdallah_Cashflow', '_blank');
+    });
+  });
+});
+</script>
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -209,7 +222,7 @@
   <div class="main-title">اختر العملة التي تريد شراءها</div>
   <div class="coin-cards">
     <!-- USDT Card -->
-    <div class="coin-card" onclick="window.location.href='flash-transfer.html'">
+    <div class="coin-card">
       <div class="coin-icon usdt"><i class="fab fa-usdt"></i></div>
       <div class="coin-name">USDT (Tether)</div>
       <div class="coin-price">$1.00</div>
@@ -222,7 +235,7 @@
       <button class="coin-btn">Flash Transfer</button>
     </div>
     <!-- BTC Card -->
-    <div class="coin-card btc" onclick="window.location.href='flash-transfer.html'">
+    <div class="coin-card btc">
       <div class="coin-icon btc"><i class="fab fa-btc"></i></div>
       <div class="coin-name">Bitcoin (BTC)</div>
       <div class="coin-price">$43,250</div>
@@ -235,12 +248,11 @@
       <button class="coin-btn">Flash Transfer</button>
     </div>
     <!-- TRX Card -->
-    <div class="coin-card trx" onclick="window.location.href='flash-transfer.html'">
+    <div class="coin-card trx">
       <div class="coin-icon trx"><i class="fab fa-trx"></i></div>
       <div class="coin-name">TRON (TRX)</div>
       <div class="coin-price">$0.09</div>
       <div class="coin-desc">شبكة TRON تدعم السرعة واللامركزية.</div>
-      <button class="coin-btn">Flash Transfer</button>
       <ul class="coin-features">
         <li>Fast transactions</li>
         <li>Low fees</li>
